@@ -29,27 +29,21 @@ export class User extends BaseEntity {
     @Column({ name: 'role', type: 'nvarchar', length: 32, nullable: true })
     role: string;
 
-    @Column({ name: 'status', type: 'bit', default: true,nullable: true })
+    @Column({ name: 'status', type: 'boolean', default: true,nullable: true })
     status: boolean;
 
-    @Column({ name: 'isDashboard', type: 'bit', default: true ,nullable: true})
+    @Column({ name: 'isDashboard', type: 'boolean', default: true ,nullable: true})
     isDashboard: boolean;
 
-    @Column({ name: 'isCardata', type: 'bit', default: true,nullable: true })
+    @Column({ name: 'isCardata', type: 'boolean', default: true,nullable: true })
     isCardata: boolean;
 
-    @Column({ name: 'isCustomerData', type: 'bit', default: true ,nullable: true})
+    @Column({ name: 'isCustomerData', type: 'boolean', default: true ,nullable: true})
     isCustomerData: boolean;
 
-    @Column({ name: 'isPayment', type: 'bit', default: true ,nullable: true})
+    @Column({ name: 'isPayment', type: 'boolean', default: true ,nullable: true})
     isPayment: boolean;
 
-    @Column({ name: 'isEmployee', type: 'bit', default: true,nullable: true })
+    @Column({ name: 'isEmployee', type: 'boolean', default: true,nullable: true })
     isEmployee: boolean;
-
-
-
-
-
-
 }
