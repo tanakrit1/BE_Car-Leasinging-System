@@ -13,6 +13,5 @@ export const dataSourceOptions: DataSourceOptions = {
   entities: ['dist/database/entities/*.entity{.ts,.js}'],
   synchronize: true,
 };
-console.log(dataSourceOptions)
 const dataSource = new DataSource({ ...dataSourceOptions });
 export default dataSource;
