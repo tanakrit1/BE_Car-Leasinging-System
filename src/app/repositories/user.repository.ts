@@ -8,39 +8,60 @@ import { applyRepositoryFilterModel, applyRepositoryQuickFilter, applyRepository
 
 @Injectable()
 export class UserRepository {
-    constructor(
-        @InjectRepository(User)
-        private readonly repository: Repository<User>
-      ) { }
+  constructor(
+    @InjectRepository(User)
+    private readonly repository: Repository<User>
+  ) { }
 
-      async search(dto: any): Promise<UserPaginationModel> {
-        try {
-          const query = this.repository.createQueryBuilder('user').select('user');
-          applyRepositorySortingModel(query, 'user', dto);
-          applyRepositoryQuickFilter(query, 'user', dto.filterModel, [
-            'username',
-            'firstName',
-          ]);
-          applyRepositoryFilterModel(query, 'user', dto.filterModel);
-          query.skip((dto.page - 1) * dto.limit).take(dto.limit)
-          const queryResult = await query.getManyAndCount();
-          const [users, count] = queryResult;
-          return plainToInstance(UserPaginationModel, {
-            users: users,
-            totalItems: count,
-          } as UserPaginationModel);
-        } catch (err) {
-          throw new InternalServerErrorException(err.message + err?.query);
-        }
-      }
+  async findByUsername(username: string): Promise<UserModel> {
+    try {
+      const user: UserModel = await this.repository.findOne({
+        where: { username: username },
+      });
+      return user;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message + err?.query);
+    }
+  }
 
-      async save(model: UserModel): Promise<UserModel> {
-        try {
-          const entity: UserModel = this.repository.create(model);
-          const saved: UserModel = await this.repository.save(entity);
-          return saved;
-        } catch (err) {
-          throw new InternalServerErrorException(err.message + err?.query);
-        }
-      }
+  async search(dto: any): Promise<UserPaginationModel> {
+    try {
+      const query = this.repository.createQueryBuilder('user').select('user');
+      applyRepositorySortingModel(query, 'user', dto);
+      applyRepositoryQuickFilter(query, 'user', dto.filterModel, [
+        'username',
+        'firstName',
+      ]);
+      applyRepositoryFilterModel(query, 'user', dto.filterModel);
+      query.skip((dto.page - 1) * dto.limit).take(dto.limit)
+      const queryResult = await query.getManyAndCount();
+      const [users, count] = queryResult;
+      return plainToInstance(UserPaginationModel, {
+        users: users,
+        totalItems: count,
+      } as UserPaginationModel);
+    } catch (err) {
+      throw new InternalServerErrorException(err.message + err?.query);
+    }
+  }
+
+  async save(model: UserModel): Promise<UserModel> {
+    try {
+      const entity: UserModel = this.repository.create(model);
+      const saved: UserModel = await this.repository.save(entity);
+      return saved;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message + err?.query);
+    }
+  }
+
+  async delete(model: UserModel): Promise<UserModel> {
+    try {
+      const entity: UserModel = this.repository.create(model);
+      const deleted: UserModel = await this.repository.softRemove(entity);
+      return deleted;
+    } catch (err) {
+      throw new InternalServerErrorException(err.message + err?.query);
+    }
+  }
 }

@@ -1,15 +1,19 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post } from "@nestjs/common";
 import { UserService } from "../service/user.service";
 import { HandleErrorException } from "../exceptions/handleErrorException.exception";
 import { UserPaginationVm, UserResponseVm } from "../view-model/user/user.vm";
 import { PaginationMetadataModel } from "../models/base.model";
-import { CreateUserDto, SearchUserDto } from "../dto/user/user.dto";
+import { CreateUserDto, SearchUserDto, UpdateUserDto } from "../dto/user/user.dto";
 import { UserModel } from "../models/user.model";
+import { NotFoundException } from "../exceptions/not-found.exception";
+import { plainToInstance } from "class-transformer";
+import { AuthService } from "../service/auth.service";
 
 @Controller('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
+    private readonly authService: AuthService
   ) { }
 
   @Post('search')
@@ -33,13 +37,57 @@ export class UserController {
     @Body() createRequestVm: CreateUserDto,
   ): Promise<UserResponseVm> {
     try {
-      // createRequestVm.password = this.authService.hashPassword(
-      //   createRequestVm.password,
-      // );
+      createRequestVm.password = this.authService.hashPassword(
+        createRequestVm.password,
+      );
       const created: UserModel = await this.userService.create(createRequestVm);
       return UserResponseVm.convertToViewModel(created);
     } catch (err) {
       console.log(err)
+      throw HandleErrorException(err);
+    }
+  }
+
+  @Patch('/:username')
+  async update(
+    @Param('username') username: string,
+    @Body() dto: UpdateUserDto,
+  ): Promise<UserResponseVm> {
+    try {
+      const user = await this.userService.validate(username);
+      if (!user) {
+        throw new NotFoundException(
+          { field: 'username', value: username },
+          `ไม่สามารถระบุตัวตน ${username} ได้`,
+        );
+      }
+      if (dto.password) {
+        dto.password = this.authService.hashPassword(dto.password);
+      }
+      const updateDto: UpdateUserDto = plainToInstance(UpdateUserDto, {
+        ...user,
+        ...dto,
+      } as UpdateUserDto);
+      const updated: UserModel = await this.userService.update(updateDto);
+      return UserResponseVm.convertToViewModel(updated);
+    } catch (err) {
+      throw HandleErrorException(err);
+    }
+  }
+
+  @Delete('/:username')
+  async delete(@Param('username') username: string): Promise<UserResponseVm> {
+    try {
+      const user = await this.userService.validate(username);
+      if (!user) {
+        throw new NotFoundException(
+          { field: 'username', value: username },
+          `ไม่พบข้อมูลของผู้ใช้ ${username}`,
+        );
+      }
+      const deleted: UserModel = await this.userService.delete(user);
+      return UserResponseVm.convertToViewModel(deleted);
+    } catch (err) {
       throw HandleErrorException(err);
     }
   }
