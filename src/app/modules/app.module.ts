@@ -6,13 +6,15 @@ import { UserModule } from './user.module';
 import { AuthModule } from './auth.module';
 import { JwtAuthMiddleware } from '../middlewares/jwt.middleware';
 import { ConfigurationModule } from './confuguration.module';
+import { CarInformationModule } from './carInformation.module';
 
 @Module({
   imports: [
     DatabaseModule,
     ConfigurationModule,
     UserModule,
-    AuthModule
+    AuthModule,
+    CarInformationModule
   ],
   controllers: [AppController],
   providers: [AppService],
