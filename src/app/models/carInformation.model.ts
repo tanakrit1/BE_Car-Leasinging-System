@@ -5,6 +5,6 @@ export class CarInformationModel extends CarInformation { }
 
 export class  CarInformationPaginationModel {
     @Type(() => CarInformationModel)
-    customers: CarInformationModel[];
+    CarInformations: CarInformationModel[];
     totalItems: number;
 }
