@@ -13,6 +13,17 @@ export class SaleItemRepository {
         private readonly repository: Repository<SaleItem>
     ) { }
 
+    async findById(id: number): Promise<SaleItemModel> {
+        try {
+          const carInformation: SaleItemModel = await this.repository.findOne({
+            where: { id: id },
+          });
+          return carInformation;
+        } catch (err) {
+          throw new InternalServerErrorException(err.message + err?.query);
+        }
+      }
+
     async search(dto: any): Promise<SaleItemPaginationModel> {
         try {
             const query = this.repository.createQueryBuilder('saleitem')

@@ -14,6 +14,10 @@ export class SaleItemService {
 
     ) { }
 
+    async findById(id: number): Promise<SaleItemModel> {
+        return await this.saleItemRepository.findById(id);
+    }
+
     async search(dto): Promise<SaleItemPaginationModel> {
         const models = await this.saleItemRepository.search(dto);
         return models
@@ -27,6 +31,13 @@ export class SaleItemService {
         const model: SaleItemModel = plainToInstance(SaleItemModel, {
             ...dto,
             carInformation: carInformationModel
+        })
+        return await this.saleItemRepository.save(model);
+    }
+
+    async update(dto: CreateSaleItemDto): Promise<SaleItemModel> {
+        const model: SaleItemModel = plainToInstance(SaleItemModel, {
+            ...dto,
         })
         return await this.saleItemRepository.save(model);
     }
