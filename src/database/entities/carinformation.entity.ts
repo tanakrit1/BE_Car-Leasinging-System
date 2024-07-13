@@ -1,5 +1,6 @@
-import { Column, Entity } from "typeorm";
+import { Column, Entity, OneToMany } from "typeorm";
 import { BaseEntity } from "./base.entity";
+import { SaleItem } from "./saleItem.entity";
 
 @Entity({ name: 'carinformation' })
 export class CarInformation extends BaseEntity {
@@ -89,5 +90,8 @@ export class CarInformation extends BaseEntity {
 
     @Column({ name: 'carType', type: 'nvarchar', length: 64, nullable: true })
     carType: string;	//ประเภทขายรถ,ค้ำ
+
+    @OneToMany(() => SaleItem, (saleItem) => saleItem.carInformation)
+    saleItems: SaleItem[];
 
 }
