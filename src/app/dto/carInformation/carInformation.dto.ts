@@ -63,6 +63,11 @@ export class CreateCarInformationDto {
     carDate: string; //วันที่
 
     @IsOptional()
+    @IsString()
+    @MaxLength(64, { message: 'carType ต้องมีความยาวไม่เกิน' })
+    carType: string; //ประเภท
+
+    @IsOptional()
     @IsNumber()
     sellingPrice: number; //ราคาขาย
 
@@ -81,8 +86,6 @@ export class CreateCarInformationDto {
     @IsOptional()
     @IsNumber()
     desiredProfit: number; //กำไรที่ต้องการ
-
-
 }
 
 export class UpdateInformationDto {
@@ -140,6 +143,11 @@ export class UpdateInformationDto {
     @IsString()
     @MaxLength(64, { message: 'carDate ต้องมีความยาวไม่เกิน' })
     carDate: string; //วันที่
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(64, { message: 'carType ต้องมีความยาวไม่เกิน' })
+    carType: string; //ประเภท
 
     @IsOptional()
     @IsNumber()

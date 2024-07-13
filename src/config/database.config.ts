@@ -11,7 +11,7 @@ export const dataSourceOptions: DataSourceOptions = {
   password: process.env.SQLSRV_PASS,
   database: process.env.SQLSRV_NAME,
   entities: ['dist/database/entities/*.entity{.ts,.js}'],
-  synchronize: false,
+  synchronize: true,
 };
 const dataSource = new DataSource({ ...dataSourceOptions });
 export default dataSource;

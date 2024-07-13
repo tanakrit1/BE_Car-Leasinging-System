@@ -1,7 +1,7 @@
 import { Column, Entity } from "typeorm";
 import { BaseEntity } from "./base.entity";
 
-@Entity({ name: 'carInformation' })
+@Entity({ name: 'carinformation' })
 export class CarInformation extends BaseEntity {
 
     @Column({ name: 'carStatus', type: 'nvarchar', length: 64, nullable: true })
@@ -87,8 +87,7 @@ export class CarInformation extends BaseEntity {
     })
     desiredProfit: number; //กำไรที่ต้องการ
 
-
-
-
+    @Column({ name: 'carType', type: 'nvarchar', length: 64, nullable: true })
+    carType: string;	//ประเภทขายรถ,ค้ำ
 
 }
