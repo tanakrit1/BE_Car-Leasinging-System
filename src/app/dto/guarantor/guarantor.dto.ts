@@ -35,6 +35,8 @@ export class CreateGuarantorDto {
 
 export class UpdateGuarantorDto {
 
+    id:number
+    
     @IsOptional()
     @IsString()
     @MaxLength(64, { message: 'guarantorName ต้องมีความยาวไม่เกิน' })

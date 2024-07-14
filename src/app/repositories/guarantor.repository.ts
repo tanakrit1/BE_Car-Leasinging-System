@@ -54,6 +54,18 @@ export class GuarantorRepository {
         }
     }
 
+    async saveMany(
+        models: GuarantorModel[],
+      ): Promise<GuarantorModel[]> {
+        try {
+          const saved: GuarantorModel[] = await this.repository.save(models);
+          return saved;
+        } catch (err) {
+          throw new InternalServerErrorException(err.message + err?.query);
+        }
+      }
+    
+
     async delete(model: GuarantorModel): Promise<GuarantorModel> {
         try {
           const entity: GuarantorModel = this.repository.create(model);

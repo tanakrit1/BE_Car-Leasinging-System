@@ -1,6 +1,6 @@
 import { Body, Controller, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
 import { SaleItemService } from "../service/saleItem.service";
-import { CreateSaleItemDto, SearchSaleItemDto, UpdateSaleItemDto } from "../dto/saleitem/saleitem.dto";
+import { CreateAdvanceSaleItemDto, CreateSaleItemDto, SearchSaleItemDto, UpdateSaleItemDto } from "../dto/saleitem/saleitem.dto";
 import { SaleItemPaginationVm, SaleItemResponseVm } from "../view-model/saleitem/saleitem.vm";
 import { PaginationMetadataModel } from "../models/base.model";
 import { HandleErrorException } from "../exceptions/handleErrorException.exception";
@@ -62,4 +62,13 @@ export class SaleItemController {
       }
     }
 
+    @Post('createAdvance')
+    async createAdvance(@Body() dto: CreateAdvanceSaleItemDto): Promise<any> {
+      try{
+        const createdAdvance = await this.saleItemService.createAdvance(dto);
+        return SaleItemResponseVm.convertToViewModel(createdAdvance);
+      }catch(err){
+        throw HandleErrorException(err);
+      }
+    }
 }

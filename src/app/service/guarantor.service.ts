@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { GuarantorRepository } from "../repositories/guarantor.repository";
 import { GuarantorModel, GuarantorPaginationModel } from "../models/guarantor.model";
 import { CreateGuarantorDto } from "../dto/guarantor/guarantor.dto";
@@ -10,6 +10,7 @@ import { SaleItemService } from "./saleItem.service";
 export class GuarantorService {
     constructor(
         private readonly guarantorRepository: GuarantorRepository,
+        @Inject(forwardRef(() => SaleItemService))
         private readonly saleItemService: SaleItemService
     ) { }
 
@@ -32,6 +33,12 @@ export class GuarantorService {
         })
         return await this.guarantorRepository.save(model);
     }
+
+    async saveMany(
+        models,
+      ): Promise<GuarantorModel[]> {
+        return await this.guarantorRepository.saveMany(models);
+      }
 
     async update(dto: CreateGuarantorDto): Promise<GuarantorModel> {
         const model: GuarantorModel = plainToInstance(GuarantorModel, {
