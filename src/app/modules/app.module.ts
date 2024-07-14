@@ -8,6 +8,7 @@ import { JwtAuthMiddleware } from '../middlewares/jwt.middleware';
 import { ConfigurationModule } from './confuguration.module';
 import { CarInformationModule } from './carInformation.module';
 import { SaleItemModule } from './saleItem.module';
+import { GuarantorModule } from './guarantor.module';
 
 @Module({
   imports: [
@@ -16,7 +17,8 @@ import { SaleItemModule } from './saleItem.module';
     UserModule,
     AuthModule,
     CarInformationModule,
-    SaleItemModule
+    SaleItemModule,
+    GuarantorModule
   ],
   controllers: [AppController],
   providers: [AppService],
