@@ -10,9 +10,12 @@ import { SaleItemService } from "./saleItem.service";
 export class GuarantorService {
     constructor(
         private readonly guarantorRepository: GuarantorRepository,
-        private readonly  saleItemService:SaleItemService
+        private readonly saleItemService: SaleItemService
     ) { }
 
+    async findById(id: number): Promise<GuarantorModel> {
+        return await this.guarantorRepository.findById(id);
+    }
     async search(dto): Promise<GuarantorPaginationModel> {
         const models = await this.guarantorRepository.search(dto);
         return models
@@ -25,8 +28,19 @@ export class GuarantorService {
         }
         const model: GuarantorModel = plainToInstance(GuarantorModel, {
             ...dto,
-            saleItem:saleItemModel
+            saleItem: saleItemModel
         })
         return await this.guarantorRepository.save(model);
+    }
+
+    async update(dto: CreateGuarantorDto): Promise<GuarantorModel> {
+        const model: GuarantorModel = plainToInstance(GuarantorModel, {
+            ...dto,
+        })
+        return await this.guarantorRepository.save(model);
+    }
+
+    async delete(model: GuarantorModel): Promise<GuarantorModel> {
+        return await this.guarantorRepository.delete(model);
     }
 }

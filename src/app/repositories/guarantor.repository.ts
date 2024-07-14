@@ -13,6 +13,17 @@ export class GuarantorRepository {
         private readonly repository: Repository<Guarantor>
     ) { }
 
+    async findById(id: number): Promise<GuarantorModel> {
+        try {
+          const carInformation: GuarantorModel = await this.repository.findOne({
+            where: { id: id },
+          });
+          return carInformation;
+        } catch (err) {
+          throw new InternalServerErrorException(err.message + err?.query);
+        }
+      }
+
     async search(dto: any): Promise<GuarantorPaginationModel> {
         try {
             const query = this.repository.createQueryBuilder('guarantor')
@@ -42,6 +53,16 @@ export class GuarantorRepository {
             throw new InternalServerErrorException(err.message + err?.query);
         }
     }
+
+    async delete(model: GuarantorModel): Promise<GuarantorModel> {
+        try {
+          const entity: GuarantorModel = this.repository.create(model);
+          const deleted: GuarantorModel = await this.repository.softRemove(entity);
+          return deleted;
+        } catch (err) {
+          throw new InternalServerErrorException(err.message + err?.query);
+        }
+      }
 }
 
 
