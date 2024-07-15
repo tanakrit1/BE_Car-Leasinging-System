@@ -1,7 +1,7 @@
 import { forwardRef, Inject, Injectable } from "@nestjs/common";
 import { SaleItemRepository } from "../repositories/saleItem.repository";
 import { SaleItemModel, SaleItemPaginationModel } from "../models/saleitem.model";
-import { CreateAdvanceSaleItemDto, CreateSaleItemDto } from "../dto/saleitem/saleitem.dto";
+import { CreateAdvanceSaleItemDto, CreateSaleItemDto, UpdateAdvanceSaleItemDto } from "../dto/saleitem/saleitem.dto";
 import { plainToInstance } from "class-transformer";
 import { CarInformationService } from "./carInformation.service";
 import { CarInformationModel } from "../models/carInformation.model";
@@ -15,7 +15,7 @@ export class SaleItemService {
         private readonly saleItemRepository: SaleItemRepository,
         private readonly carInformationService: CarInformationService,
         @Inject(forwardRef(() => GuarantorService))
-        private readonly guarantorService:GuarantorService
+        private readonly guarantorService: GuarantorService
 
     ) { }
 
@@ -47,7 +47,7 @@ export class SaleItemService {
         return await this.saleItemRepository.save(model);
     }
 
-    async createAdvance(dto: CreateAdvanceSaleItemDto): Promise<any>{
+    async createAdvance(dto: CreateAdvanceSaleItemDto): Promise<any> {
 
         let carInformationModel = new CarInformationModel();
         if (dto.carInformation_id) {
@@ -56,16 +56,16 @@ export class SaleItemService {
             const updateCarInformationDto: CarInformationModel = plainToInstance(CarInformationModel, {
                 ...carInformationModel,
                 ...dto,
-                carStatus:"sold"
-              } as CarInformationModel)
-              carInformationModel = await this.carInformationService.update(updateCarInformationDto)
+                carStatus: "sold"
+            } as CarInformationModel)
+            carInformationModel = await this.carInformationService.update(updateCarInformationDto)
 
-        }else{
-            const modelCarInformation: CarInformationModel = plainToInstance(CarInformationModel,{
+        } else {
+            const modelCarInformation: CarInformationModel = plainToInstance(CarInformationModel, {
                 ...dto,
-                carType:"pledge",
-                carStatus:"sold"
-            }  as CarInformationModel)
+                carType: "pledge",
+                carStatus: "sold"
+            } as CarInformationModel)
             carInformationModel = await this.carInformationService.create(modelCarInformation)
         }
 
@@ -73,17 +73,47 @@ export class SaleItemService {
             ...dto,
             carInformation: carInformationModel
         })
-        const createsaleItem =  await this.saleItemRepository.save(model);
+        const createsaleItem = await this.saleItemRepository.save(model);
 
-        let guarantorModel=[]
-        if(createsaleItem){
+        let guarantorModel = []
+        if (createsaleItem) {
             let saveGuarantor = dto.guarantors?.map(guarantor => {
-                return { ...guarantor, saleItem:{id:createsaleItem.id}};
+                return { ...guarantor, saleItem: { id: createsaleItem.id } };
             });
             guarantorModel = await this.guarantorService.saveMany(saveGuarantor);
         }
 
-        return  {...createsaleItem,carInformation:carInformationModel,guarantors:guarantorModel} 
+        return { ...createsaleItem, carInformation: carInformationModel, guarantors: guarantorModel }
+    }
+
+
+    async updateAdvance(dto: UpdateAdvanceSaleItemDto): Promise<any> {
+
+        let carInformationModel = new CarInformationModel();
+        if (dto.carInformation_id) {
+            carInformationModel = await this.carInformationService.findById(dto.carInformation_id)
+            if (carInformationModel) {
+                const updateCarInformationDto: CarInformationModel = plainToInstance(CarInformationModel, {
+                    ...carInformationModel,
+                    ...dto
+                } as CarInformationModel)
+                carInformationModel = await this.carInformationService.update(updateCarInformationDto)
+            }
+        }
+
+        const model: SaleItemModel = plainToInstance(SaleItemModel, {
+            ...dto,
+            id: dto.saleitem_id
+        })
+        const updatesaleItem = await this.saleItemRepository.save(model);
+
+        let guarantorModel = []
+        if (dto.guarantors?.length > 0) {
+            let saveGuarantor = dto.guarantors
+            guarantorModel = await this.guarantorService.saveMany(saveGuarantor);
+        }
+
+        return { ...updatesaleItem, carInformation: carInformationModel, guarantors: guarantorModel }
     }
 
 }

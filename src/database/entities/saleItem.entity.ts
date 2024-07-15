@@ -30,6 +30,9 @@ export class SaleItem extends BaseEntity {
     @Column({ name: 'gps', type: 'nvarchar', length: 128, nullable: true })
     gps: string;	//GPS
 
+    @Column({ name: 'statusInstallment', type: 'nvarchar', length: 16, nullable: true })
+    statusInstallment: string; //สถานะผ่อนชำระ
+
     @Column({
         name: 'discount',
         type: 'decimal',
