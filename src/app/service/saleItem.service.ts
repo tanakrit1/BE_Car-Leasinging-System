@@ -71,6 +71,8 @@ export class SaleItemService {
 
         const model: SaleItemModel = plainToInstance(SaleItemModel, {
             ...dto,
+            dueDate:new Date(),
+            remainingBalance:dto.totalOrder,
             carInformation: carInformationModel
         })
         const createsaleItem = await this.saleItemRepository.save(model);

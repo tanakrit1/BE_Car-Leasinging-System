@@ -1,6 +1,6 @@
 import { SaleItem } from "src/database/entities/saleItem.entity";
 import { PaginationDto } from "../base/base.dto";
-import { IsArray, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, ValidateNested } from "class-validator";
+import { IsArray, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { CreateGuarantorDto, UpdateAdvanceGuarantorDto } from "../guarantor/guarantor.dto";
 
@@ -77,6 +77,22 @@ export class CreateSaleItemDto {
     downPayment: number; //เงินดาวน์
 
     @IsOptional()
+    @IsDate({message:'dueDate ต้องเป็นวันที่'})
+    dueDate?: Date; //วันนัดชำระ
+
+    @IsOptional()
+    @IsNumber()
+    paymentAmount?: number; //จำนวนเงินที่ชำระแล้ว
+
+    @IsOptional()
+    @IsNumber()
+    remainingBalance?: number; //ยอดเงินคงเหลือ
+
+    @IsOptional()
+    @IsNumber()
+    totalInterest?: number; //ดอกเบี้ยที่ได้รับรวม
+
+    @IsOptional()
     @IsNumber()
     carInformation_id?: number; 
 }
@@ -149,6 +165,22 @@ export class UpdateSaleItemDto {
     @IsOptional()
     @IsNumber()
     downPayment: number; //เงินดาวน์
+
+    @IsOptional()
+    @IsDate({message:'dueDate ต้องเป็นวันที่'})
+    dueDate?: Date; //วันนัดชำระ
+
+    @IsOptional()
+    @IsNumber()
+    paymentAmount?: number; //จำนวนเงินที่ชำระแล้ว
+
+    @IsOptional()
+    @IsNumber()
+    remainingBalance?: number; //ยอดเงินคงเหลือ
+
+    @IsOptional()
+    @IsNumber()
+    totalInterest?: number; //ดอกเบี้ยที่ได้รับรวม
 }
 
 export class CreateAdvanceSaleItemDto {
@@ -219,8 +251,26 @@ export class CreateAdvanceSaleItemDto {
     downPayment?: number; //เงินดาวน์
 
     @IsOptional()
+    @IsDate({message:'dueDate ต้องเป็นวันที่'})
+    dueDate?: Date; //วันนัดชำระ
+
+    @IsOptional()
+    @IsNumber()
+    paymentAmount?: number; //จำนวนเงินที่ชำระแล้ว
+
+    @IsOptional()
+    @IsNumber()
+    remainingBalance?: number; //ยอดเงินคงเหลือ
+
+    @IsOptional()
+    @IsNumber()
+    totalInterest?: number; //ดอกเบี้ยที่ได้รับรวม
+
+    @IsOptional()
     @IsNumber()
     carInformation_id?: number;
+
+    
 
      //-----------------------------carInformation--------------------------------//
 
@@ -379,6 +429,22 @@ export class UpdateAdvanceSaleItemDto {
     @IsOptional()
     @IsNumber()
     downPayment?: number; //เงินดาวน์
+
+    @IsOptional()
+    @IsDate({message:'dueDate ต้องเป็นวันที่'})
+    dueDate?: Date; //วันนัดชำระ
+
+    @IsOptional()
+    @IsNumber()
+    paymentAmount?: number; //จำนวนเงินที่ชำระแล้ว
+
+    @IsOptional()
+    @IsNumber()
+    remainingBalance?: number; //ยอดเงินคงเหลือ
+
+    @IsOptional()
+    @IsNumber()
+    totalInterest?: number; //ดอกเบี้ยที่ได้รับรวม
 
     @IsNotEmpty()
     @IsNumber()

@@ -83,6 +83,44 @@ export class SaleItem extends BaseEntity {
     })
     downPayment: number; //เงินดาวน์
 
+    @Column({
+        name: 'dueDate',
+        type: 'date',
+        nullable: true,
+        comment: 'วันนัดชำระ',
+      })
+    dueDate: Date; //วันนัดชำระ
+
+    @Column({
+        name: 'paymentAmount',
+        type: 'decimal',
+        precision: 18,
+        scale: 2,
+        nullable: true,
+        comment: 'paymentAmount',
+    })
+    paymentAmount: number; //จำนวนเงินที่ชำระแล้ว
+
+    @Column({
+        name: 'remainingBalance',
+        type: 'decimal',
+        precision: 18,
+        scale: 2,
+        nullable: true,
+        comment: 'remainingBalance',
+    })
+    remainingBalance: number; //ยอดเงินคงเหลือ
+
+    @Column({
+        name: 'totalInterest',
+        type: 'decimal',
+        precision: 18,
+        scale: 2,
+        nullable: true,
+        comment: 'totalInterest',
+    })
+    totalInterest: number; //ดอกเบี้ยที่ได้รับรวม
+
     @OneToMany(() => Guarantor, (guarantor) => guarantor.saleItem)
     guarantors: Guarantor[];
 
