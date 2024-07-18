@@ -9,6 +9,7 @@ import { ConfigurationModule } from './confuguration.module';
 import { CarInformationModule } from './carInformation.module';
 import { SaleItemModule } from './saleItem.module';
 import { GuarantorModule } from './guarantor.module';
+import { PaymentModule } from './payment.module';
 
 @Module({
   imports: [
@@ -18,7 +19,8 @@ import { GuarantorModule } from './guarantor.module';
     AuthModule,
     CarInformationModule,
     SaleItemModule,
-    GuarantorModule
+    GuarantorModule,
+    PaymentModule
   ],
   controllers: [AppController],
   providers: [AppService],

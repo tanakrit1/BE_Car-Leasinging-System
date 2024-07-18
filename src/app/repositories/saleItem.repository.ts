@@ -30,6 +30,7 @@ export class SaleItemRepository {
             .select('saleitem')
             .leftJoinAndSelect('saleitem.guarantors', 'guarantor')
             .leftJoinAndSelect('saleitem.carInformation', 'carInformation')
+            .leftJoinAndSelect('saleitem.payments', 'payment')
             applyRepositorySortingModel(query, 'saleitem', dto);
             applyRepositoryQuickFilter(query, 'saleitem', dto.filterModel);
             applyRepositoryFilterModel(query, 'saleitem', dto.filterModel);

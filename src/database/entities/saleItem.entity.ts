@@ -2,6 +2,7 @@ import { Column, Entity, ManyToOne, OneToMany } from "typeorm";
 import { BaseEntity } from "./base.entity";
 import { Guarantor } from "./guarantor.entity";
 import { CarInformation } from "./carinformation.entity";
+import { Payment } from "./payment.entity";
 
 @Entity({ name: 'saleitem' })
 export class SaleItem extends BaseEntity {
@@ -123,6 +124,9 @@ export class SaleItem extends BaseEntity {
 
     @OneToMany(() => Guarantor, (guarantor) => guarantor.saleItem)
     guarantors: Guarantor[];
+
+    @OneToMany(() => Payment, (payment) => payment.saleItem)
+    payments: Payment[];
 
     @ManyToOne(() => CarInformation, (carInformation) => carInformation.saleItems, { nullable: true })
     carInformation: CarInformation;
