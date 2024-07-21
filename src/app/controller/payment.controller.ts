@@ -54,6 +54,7 @@ export class PaymentController {
         const deleted: PaymentModel = await this.paymentService.delete(payment);
         return PaymentResponseVm.convertToViewModel(deleted);
       } catch (err) {
+        console.log(err)
         throw HandleErrorException(err);
       }
     }

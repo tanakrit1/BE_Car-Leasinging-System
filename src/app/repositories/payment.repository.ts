@@ -24,6 +24,20 @@ export class PaymentRepository {
         }
     }
 
+    async findIdSaleitem(id: number): Promise<PaymentModel> {
+        try {
+            const payment: PaymentModel = await this.repository.findOne({
+                relations: { saleItem: true },
+                where: { id: id },
+            });
+            return payment;
+        } catch (err) {
+            throw new InternalServerErrorException(err.message + err?.query);
+        }
+    }
+    
+
+    
 
     async search(dto: any): Promise<PaymentPaginationModel> {
         try {
