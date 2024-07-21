@@ -13,6 +13,18 @@ export class PaymentRepository {
         private readonly repository: Repository<Payment>
     ) { }
 
+    async findById(id: number): Promise<PaymentModel> {
+        try {
+            const payment: PaymentModel = await this.repository.findOne({
+                where: { id: id },
+            });
+            return payment;
+        } catch (err) {
+            throw new InternalServerErrorException(err.message + err?.query);
+        }
+    }
+
+
     async search(dto: any): Promise<PaymentPaginationModel> {
         try {
             const query = this.repository.createQueryBuilder('payment')
@@ -40,6 +52,16 @@ export class PaymentRepository {
             return saved;
         } catch (err) {
             throw new InternalServerErrorException(err.message + err?.query);
+        }
+    }
+
+    async delete(model: PaymentModel): Promise<PaymentModel> {
+        try {
+          const entity: PaymentModel = this.repository.create(model);
+          const deleted: PaymentModel = await this.repository.softRemove(entity);
+          return deleted;
+        } catch (err) {
+          throw new InternalServerErrorException(err.message + err?.query);
         }
     }
 

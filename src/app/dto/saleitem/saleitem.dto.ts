@@ -94,6 +94,10 @@ export class CreateSaleItemDto {
 
     @IsOptional()
     @IsNumber()
+    totalFee?: number;//รวมค่าปรับ
+
+    @IsOptional()
+    @IsNumber()
     carInformation_id?: number; 
 }
 
@@ -181,6 +185,10 @@ export class UpdateSaleItemDto {
     @IsOptional()
     @IsNumber()
     totalInterest?: number; //ดอกเบี้ยที่ได้รับรวม
+
+    @IsOptional()
+    @IsNumber()
+    totalFee?: number;//รวมค่าปรับ
 }
 
 export class CreateAdvanceSaleItemDto {
@@ -265,6 +273,10 @@ export class CreateAdvanceSaleItemDto {
     @IsOptional()
     @IsNumber()
     totalInterest?: number; //ดอกเบี้ยที่ได้รับรวม
+
+    @IsOptional()
+    @IsNumber()
+    totalFee?: number;//รวมค่าปรับ
 
     @IsOptional()
     @IsNumber()
@@ -445,6 +457,10 @@ export class UpdateAdvanceSaleItemDto {
     @IsOptional()
     @IsNumber()
     totalInterest?: number; //ดอกเบี้ยที่ได้รับรวม
+
+    @IsOptional()
+    @IsNumber()
+    totalFee?: number;//รวมค่าปรับ
 
     @IsNotEmpty()
     @IsNumber()

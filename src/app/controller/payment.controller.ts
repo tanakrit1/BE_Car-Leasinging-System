@@ -1,9 +1,11 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post } from "@nestjs/common";
 import { PaymentService } from "../service/payment.service";
 import { PaymentPaginationVm, PaymentResponseVm } from "../view-model/payment/payment.vm";
 import { CreatePaymentDto, SearchPaymentDto } from "../dto/payment/payment.dto";
 import { PaginationMetadataModel } from "../models/base.model";
 import { HandleErrorException } from "../exceptions/handleErrorException.exception";
+import { NotFoundException } from "../exceptions/not-found.exception";
+import { PaymentModel } from "../models/payment.model";
 
 @Controller('payment')
 export class PaymentController {
@@ -36,6 +38,24 @@ export class PaymentController {
             console.log(err)
             throw HandleErrorException(err);
         }
+    }
+
+    @Delete('/:id')
+    async delete(@Param('id') parametersId: number): Promise<PaymentResponseVm> {
+      try {
+          const paymentId = Number(parametersId);
+        const payment = await this.paymentService.findById(paymentId);
+        if (!payment) {
+          throw new NotFoundException(
+            { field: 'id', value: parametersId },
+            `ไม่พบข้อมูลของ paymentId ID ${parametersId}`,
+          );
+        }
+        const deleted: PaymentModel = await this.paymentService.delete(payment);
+        return PaymentResponseVm.convertToViewModel(deleted);
+      } catch (err) {
+        throw HandleErrorException(err);
+      }
     }
 
 }

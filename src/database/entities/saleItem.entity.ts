@@ -122,6 +122,16 @@ export class SaleItem extends BaseEntity {
     })
     totalInterest: number; //ดอกเบี้ยที่ได้รับรวม
 
+    @Column({
+        name: 'totalFee',
+        type: 'decimal',
+        precision: 18,
+        scale: 2,
+        nullable: true,
+        comment: 'totalFee',
+    })
+    totalFee: number;//รวมค่าปรับ
+
     @OneToMany(() => Guarantor, (guarantor) => guarantor.saleItem)
     guarantors: Guarantor[];
 
