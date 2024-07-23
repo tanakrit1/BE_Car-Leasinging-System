@@ -82,4 +82,18 @@ export class SaleItemController {
         throw HandleErrorException(err);
       }
     }
+
+    @Post('summarySalesPastYear')
+    async summarySalesPastYear(@Body() dto: any): Promise<any> {
+      try{
+        const responses = await this.saleItemService.summarySalesPastYear(dto)
+        return responses 
+
+      }catch(err){
+        console.log(err)
+        throw HandleErrorException(err);
+      }
+    }
+
+
 }

@@ -118,4 +118,37 @@ export class SaleItemService {
         return { ...updatesaleItem, carInformation: carInformationModel, guarantors: guarantorModel }
     }
 
+    async summarySalesPastYear(dto):Promise<any>{
+        const saleItemYear= await this.saleItemRepository.summarySalesPastYear(dto);
+
+        type SalesSummary = {
+            [year: string]: {
+                total: number;
+                payment: number;
+            };
+        };
+
+        function summarizeSales(data): SalesSummary {
+            const summary: SalesSummary = {};
+        
+            data.forEach(sale => {
+                const year = new Date(sale.createdAt).getFullYear().toString();
+                const payment = parseFloat(sale.downPayment)+parseFloat(sale.totalOrder);
+        
+                if (!summary[year]) {
+                    summary[year] = { total: 0, payment: 0 };
+                }
+        
+                summary[year].total += 1;
+                summary[year].payment += payment;
+            });
+        
+            return summary;
+        }
+        
+        const salesSummary = summarizeSales(saleItemYear.saleItems);
+
+        return salesSummary
+    }
+
 }

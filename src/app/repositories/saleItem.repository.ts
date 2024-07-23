@@ -55,4 +55,29 @@ export class SaleItemRepository {
             throw new InternalServerErrorException(err.message + err?.query);
         }
     }
+    async  summarySalesPastYear(dto): Promise<any>{
+        try{
+            const dateStart = dto.dateStart;
+            const dateEnd = dto.dateEnd;
+            const query = this.repository.createQueryBuilder('saleitem')
+            .select('saleitem')
+            .where(
+                'YEAR(saleitem.createdAt) BETWEEN YEAR(:dateStart) AND YEAR(:dateEnd)',
+                { dateStart, dateEnd }
+            );
+            applyRepositorySortingModel(query, 'saleitem', dto);
+            applyRepositoryQuickFilter(query, 'saleitem', dto.filterModel);
+            applyRepositoryFilterModel(query, 'saleitem', dto.filterModel);
+            // query.skip((dto.page - 1) * dto.limit).take(dto.limit);
+            const queryResult = await query.getManyAndCount();
+            const [saleItems, count] = queryResult;
+            return plainToInstance(SaleItemPaginationModel, {
+                saleItems: saleItems,
+                totalItems: count,
+            } as SaleItemPaginationModel);
+        }catch(err){
+            throw new InternalServerErrorException(err.message + err?.query);
+        }
+
+    }
 }
