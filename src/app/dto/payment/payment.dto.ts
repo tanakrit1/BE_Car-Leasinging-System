@@ -44,6 +44,11 @@ export class CreatePaymentDto {
     @MaxLength(64, { message: 'receiver ต้องมีความยาวไม่เกิน' })
     receiver: string; //ผู้รับเงิน
 
+    @IsOptional()
+    @IsString()
+    @MaxLength(512, { message: 'note ต้องมีความยาวไม่เกิน' })
+    note: string; //note
+
     @IsNotEmpty()
     @IsNumber()
     saleItem_id?: number; 

@@ -95,5 +95,16 @@ export class SaleItemController {
       }
     }
 
+    @Post('summarySalesPastMonth')
+    async summarySalesPastMonth(@Body() dto: any): Promise<any> {
+      try{
+        const responses = await this.saleItemService.summarySalesPastMonth(dto)
+        return responses 
+      }catch(err){
+        console.log(err)
+        throw HandleErrorException(err);
+      }
+    }
+
 
 }

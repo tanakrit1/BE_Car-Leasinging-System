@@ -63,6 +63,9 @@ export class Payment extends BaseEntity {
     })
     fee: number; //ค่าปรับ
 
+    @Column({ name: 'note', type: 'nvarchar', length: 512, nullable: true })
+    note: string;	//note
+
     @Column({ name: 'methodPay', type: 'nvarchar', length: 16, nullable: true })
     methodPay: string; //การชำระ(เงินสด/เงินโอน)
 
