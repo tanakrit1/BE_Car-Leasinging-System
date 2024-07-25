@@ -59,16 +59,16 @@ export class PaymentController {
       }
     }
 
-  //   @Post('closeInstallment')
-  //   async closeInstallment(@Body() dto: any): Promise<any> {
-  //     try {
-  //         const created = await this.paymentService.closeInstallment(dto);
-  //         return PaymentResponseVm.convertToViewModel(created);
-  //     } catch (err) {
-  //         console.log(err)
-  //         throw HandleErrorException(err);
-  //     }
-  // }
+    @Post('closeInstallment')
+    async closeInstallment(@Body() dto: CreatePaymentDto): Promise<any> {
+      try {
+          const created = await this.paymentService.closeInstallment(dto);
+          return PaymentResponseVm.convertToViewModel(created);
+      } catch (err) {
+          console.log(err)
+          throw HandleErrorException(err);
+      }
+  }
     
 
 }
