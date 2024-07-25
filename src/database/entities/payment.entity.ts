@@ -66,6 +66,9 @@ export class Payment extends BaseEntity {
     @Column({ name: 'note', type: 'nvarchar', length: 512, nullable: true })
     note: string;	//note
 
+    @Column({ name: 'bank', type: 'nvarchar', length: 64, nullable: true })
+    bank: string;	//ธนาคาร
+
     @Column({ name: 'methodPay', type: 'nvarchar', length: 16, nullable: true })
     methodPay: string; //การชำระ(เงินสด/เงินโอน)
 

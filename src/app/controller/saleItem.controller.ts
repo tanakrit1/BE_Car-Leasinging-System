@@ -1,4 +1,4 @@
-import { Body, Controller, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
 import { SaleItemService } from "../service/saleItem.service";
 import { CreateAdvanceSaleItemDto, CreateSaleItemDto, SearchSaleItemDto, UpdateAdvanceSaleItemDto, UpdateSaleItemDto } from "../dto/saleitem/saleitem.dto";
 import { SaleItemPaginationVm, SaleItemResponseVm } from "../view-model/saleitem/saleitem.vm";
@@ -100,6 +100,17 @@ export class SaleItemController {
       try{
         const responses = await this.saleItemService.summarySalesPastMonth(dto)
         return responses 
+      }catch(err){
+        console.log(err)
+        throw HandleErrorException(err);
+      }
+    }
+
+    @Get('maxid')
+    async maxid(): Promise<SaleItemResponseVm> {
+      try{
+        const responses = await this.saleItemService.maxid()
+        return SaleItemResponseVm.convertToViewModel(responses)  
       }catch(err){
         console.log(err)
         throw HandleErrorException(err);

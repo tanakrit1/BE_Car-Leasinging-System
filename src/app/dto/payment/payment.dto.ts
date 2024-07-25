@@ -49,6 +49,11 @@ export class CreatePaymentDto {
     @MaxLength(512, { message: 'note ต้องมีความยาวไม่เกิน' })
     note: string; //note
 
+    @IsOptional()
+    @IsString()
+    @MaxLength(64, { message: 'bank ต้องมีความยาวไม่เกิน' })
+    bank: string; //bank
+
     @IsNotEmpty()
     @IsNumber()
     saleItem_id?: number; 

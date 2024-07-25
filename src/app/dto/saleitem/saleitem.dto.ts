@@ -1,7 +1,7 @@
 import { SaleItem } from "src/database/entities/saleItem.entity";
 import { PaginationDto } from "../base/base.dto";
 import { IsArray, IsDate, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, ValidateNested } from "class-validator";
-import { Type } from "class-transformer";
+import { Transform, TransformFnParams, Type } from "class-transformer";
 import { CreateGuarantorDto, UpdateAdvanceGuarantorDto } from "../guarantor/guarantor.dto";
 
 
@@ -77,6 +77,7 @@ export class CreateSaleItemDto {
     downPayment: number; //เงินดาวน์
 
     @IsOptional()
+    @Transform(({ value }: TransformFnParams) => new Date(value))
     @IsDate({message:'dueDate ต้องเป็นวันที่'})
     dueDate?: Date; //วันนัดชำระ
 
@@ -99,6 +100,11 @@ export class CreateSaleItemDto {
     @IsOptional()
     @IsNumber()
     carInformation_id?: number; 
+
+    @IsOptional()
+    @Transform(({ value }: TransformFnParams) => new Date(value))
+    @IsDate({message:'contractDate ต้องเป็นวันที่'})
+    contractDate?: Date; //วันที่ทำสัญญา 
 }
 
 export class UpdateSaleItemDto {
@@ -189,6 +195,11 @@ export class UpdateSaleItemDto {
     @IsOptional()
     @IsNumber()
     totalFee?: number;//รวมค่าปรับ
+
+    @IsOptional()
+    @Transform(({ value }: TransformFnParams) => new Date(value))
+    @IsDate({message:'contractDate ต้องเป็นวันที่'})
+    contractDate?: Date; //วันที่ทำสัญญา 
 }
 
 export class CreateAdvanceSaleItemDto {
@@ -282,7 +293,10 @@ export class CreateAdvanceSaleItemDto {
     @IsNumber()
     carInformation_id?: number;
 
-    
+    @IsOptional()
+    @Transform(({ value }: TransformFnParams) => new Date(value))
+    @IsDate({message:'contractDate ต้องเป็นวันที่'})
+    contractDate?: Date; //วันที่ทำสัญญา 
 
      //-----------------------------carInformation--------------------------------//
 
@@ -443,6 +457,7 @@ export class UpdateAdvanceSaleItemDto {
     downPayment?: number; //เงินดาวน์
 
     @IsOptional()
+    @Transform(({ value }: TransformFnParams) => new Date(value))
     @IsDate({message:'dueDate ต้องเป็นวันที่'})
     dueDate?: Date; //วันนัดชำระ
 
@@ -465,6 +480,11 @@ export class UpdateAdvanceSaleItemDto {
     @IsNotEmpty()
     @IsNumber()
     carInformation_id?: number;
+
+    @IsOptional()
+    @Transform(({ value }: TransformFnParams) => new Date(value))
+    @IsDate({message:'contractDate ต้องเป็นวันที่'})
+    contractDate?: Date; //วันที่ทำสัญญา 
 
     //-----------------------------carInformation--------------------------------//
     @IsOptional()

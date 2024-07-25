@@ -71,7 +71,8 @@ export class SaleItemService {
 
         const model: SaleItemModel = plainToInstance(SaleItemModel, {
             ...dto,
-            dueDate:new Date(),
+            contractDate:dto.contractDate,
+            dueDate:dto.contractDate,
             remainingBalance:dto.totalOrder,
             carInformation: carInformationModel
         })
@@ -182,6 +183,11 @@ export class SaleItemService {
         const salesSummary = summarizeSales(saleItemMonth.saleItems);
 
         return salesSummary
+    }
+
+    async maxid():Promise<SaleItemModel>{
+        const maxid= await this.saleItemRepository.maxid();
+        return maxid
     }
 
 }

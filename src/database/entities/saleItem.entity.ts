@@ -132,6 +132,14 @@ export class SaleItem extends BaseEntity {
     })
     totalFee: number;//รวมค่าปรับ
 
+    @Column({
+        name: 'contractDate',
+        type: 'date',
+        nullable: true,
+        comment: 'วันที่ทำสัญญา',
+      })
+    contractDate: Date; //วันที่ทำสัญญา
+
     @OneToMany(() => Guarantor, (guarantor) => guarantor.saleItem)
     guarantors: Guarantor[];
 

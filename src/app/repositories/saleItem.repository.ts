@@ -114,6 +114,19 @@ export class SaleItemRepository {
             throw new InternalServerErrorException(err.message + err?.query);
         }
     }
+
+    async maxid(): Promise<any> {
+        try {
+            const query = this.repository.createQueryBuilder('saleitem')
+                .select('saleitem')
+                .orderBy('saleitem.id', 'DESC') 
+                .limit(1); 
+            const queryResult = await query.getMany();
+            return queryResult;
+        } catch (err) {
+            throw new InternalServerErrorException(err.message + err?.query);
+        }
+    }
     
    
 }
