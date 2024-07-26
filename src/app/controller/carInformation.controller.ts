@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { CarInformationService } from "../service/carInformation.service";
 import { CarInformationPaginationVm, CarInformationResponseVm } from "../view-model/carInformation/carInformation.vm";
 import { HandleErrorException } from "../exceptions/handleErrorException.exception";
@@ -81,6 +81,17 @@ export class CarInformationController {
       return CarInformationResponseVm.convertToViewModel(deleted);
     }
     catch (err) {
+      throw HandleErrorException(err);
+    }
+  }
+  
+  @Get('stock')
+  async stock(): Promise<CarInformationResponseVm> {
+    try{
+      const responses = await this.carInformationService.stock()
+      return CarInformationResponseVm.convertToViewModel(responses)  
+    }catch(err){
+      console.log(err)
       throw HandleErrorException(err);
     }
   }

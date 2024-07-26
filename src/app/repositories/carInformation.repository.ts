@@ -62,4 +62,37 @@ export class CarInformationRepository {
           throw new InternalServerErrorException(err.message + err?.query);
         }
     }
+         
+    async stock(): Promise<any>{
+      try{
+          const dayjs = require('dayjs');
+          const date = dayjs().format('YYYY-MM-DD');
+
+          const querysold = this.repository.createQueryBuilder('carInformation')
+          .select('carInformation')
+          .where(
+              'YEAR(carInformation.createdAt) = YEAR(:date)',
+              { date }
+          ).andWhere(
+            'carInformation.carStatus = "sold" '
+          )
+          const queryResultsold = await querysold.getCount();
+
+               
+          const querystock = this.repository.createQueryBuilder('carInformation')
+          .select('carInformation')
+          .where(
+              'YEAR(carInformation.createdAt) = YEAR(:date)',
+              { date }
+          ).andWhere(
+            'carInformation.carStatus = "stock" '
+          )
+          const queryResulstock = await querystock.getCount();
+          
+          return {sold:queryResultsold||0,stock:queryResulstock||0}
+      }catch(err){
+          console.log(err)
+          throw new InternalServerErrorException(err.message + err?.query);
+      }
+  }
 }

@@ -34,4 +34,9 @@ export class CarInformationService {
     async delete(model: CarInformationModel): Promise<CarInformationModel> {
       return await this.carInformationRepository.delete(model);
   }
+
+  async stock(): Promise<any>{
+    return await this.carInformationRepository.stock();
+  }
+
 }
