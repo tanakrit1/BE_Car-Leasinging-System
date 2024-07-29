@@ -216,8 +216,9 @@ export class PaymentService {
         return {paymentYear:paymentYear,paymentMonth:paymentMonth,stock:stock}
     }
 
-    async reportPayment(){
-        
+    async reportPayment(dto){
+        const paymentMounth = await this.paymentRepository.reportPayment(dto);
+        return paymentMounth
     }
 
 }

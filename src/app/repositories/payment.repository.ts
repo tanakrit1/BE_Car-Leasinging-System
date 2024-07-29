@@ -138,4 +138,27 @@ export class PaymentRepository {
         }
     }
 
+    async reportPayment(dto) {
+        try {
+            const startDate = new Date(dto.date);
+            const startYear = startDate.getFullYear();
+            const startMonth = startDate.getMonth() + 1; 
+            const query = this.repository.createQueryBuilder('payment')
+                .select('SUM(COALESCE(payment.amountPay, 0))', 'totalAmountPay')
+                .addSelect('SUM(COALESCE(payment.InterestPay, 0))', 'totalInterestPay')
+                .addSelect('SUM(COALESCE(payment.fee, 0))', 'totalFee')
+                .addSelect('SUM(COALESCE(payment.amountPay, 0) + COALESCE(payment.InterestPay, 0) + COALESCE(payment.fee, 0))', 'grandTotal')
+                .where(
+                    'YEAR(payment.createdAt) = :startYear AND MONTH(payment.createdAt) = :startMonth',
+                    { startYear, startMonth }
+                )
+                .orderBy('payment.createdAt', 'DESC');
+    
+            const queryResult = await query.getRawOne();
+            return queryResult;
+        } catch (err) {
+            throw new InternalServerErrorException(err.message + err?.query);
+        }
+    }
+
 }
