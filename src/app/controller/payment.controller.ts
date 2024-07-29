@@ -104,5 +104,16 @@ export class PaymentController {
     }
   }
 
+  @Post('reportPayment')
+  async reportPayment(): Promise<any> {
+    try{
+      const responses = await this.paymentService.reportPayment()
+      // return PaymentResponseVm.convertToViewModel(responses)  
+    }catch(err){
+      console.log(err)
+      throw HandleErrorException(err);
+    }
+  }
+
 
 }

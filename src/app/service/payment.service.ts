@@ -8,13 +8,15 @@ import { SaleItemService } from "./saleItem.service";
 import { FilterModelLogicOperatorEnum } from "src/enum/filter-model-logic-operator.enum";
 import { FilterModelItemOperationEnum } from "src/enum/filter-model-item-operation.enum";
 import { sumBy } from "lodash";
+import { CarInformationService } from "./carInformation.service";
 const dayjs = require('dayjs');
 
 @Injectable()
 export class PaymentService {
     constructor(
         private readonly paymentRepository: PaymentRepository,
-        private readonly saleItemService: SaleItemService
+        private readonly saleItemService: SaleItemService,
+        private readonly CarInformationService: CarInformationService
     ) { }
 
     async search(dto): Promise<PaymentPaginationModel> {
@@ -210,7 +212,12 @@ export class PaymentService {
     async dashboardPay():Promise<any>{
         let  paymentYear =  await this.dashboardPastYear("")
         let  paymentMonth =  await this.dashboardPastMonth("")
-        return {paymentYear:paymentYear,paymentMonth:paymentMonth}
+        let  stock = await this.CarInformationService.stock()
+        return {paymentYear:paymentYear,paymentMonth:paymentMonth,stock:stock}
+    }
+
+    async reportPayment(){
+        
     }
 
 }

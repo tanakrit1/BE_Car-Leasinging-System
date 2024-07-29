@@ -109,14 +109,13 @@ export class PaymentRepository {
     
             // Calculate the date 5 months prior to startDate
             const pastDate = new Date(startDate);
-            pastDate.setMonth(startDate.getMonth() - 5);
+            pastDate.setMonth(startDate.getMonth() - 4); //5 เดือน
     
             // Extract years and months
             const startYear = startDate.getFullYear();
             const startMonth = startDate.getMonth() + 1; // getMonth() returns 0-11
             const pastYear = pastDate.getFullYear();
             const pastMonth = pastDate.getMonth() + 1;
-    
             const query = this.repository.createQueryBuilder('payment')
                 .select('payment')
                 .where(
