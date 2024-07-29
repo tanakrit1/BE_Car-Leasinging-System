@@ -190,4 +190,10 @@ export class SaleItemService {
         return maxid
     }
 
+    async summarySalesPast():Promise<any>{
+        let  saleYear =  await this.summarySalesPastYear("")
+        let  saleMonth =  await this.summarySalesPastMonth("")
+        return {saleYear:saleYear,saleMonth:saleMonth}
+    }
+
 }

@@ -117,5 +117,16 @@ export class SaleItemController {
       }
     }
 
+    @Post('summarySalesPast')
+    async summarySalesPast(): Promise<any> {
+      try{
+        const responses = await this.saleItemService.summarySalesPast()
+        return SaleItemResponseVm.convertToViewModel(responses)  
+      }catch(err){
+        console.log(err)
+        throw HandleErrorException(err);
+      }
+    }
+
 
 }
