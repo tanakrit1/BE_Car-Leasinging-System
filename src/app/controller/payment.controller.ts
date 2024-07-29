@@ -69,6 +69,40 @@ export class PaymentController {
           throw HandleErrorException(err);
       }
   }
-    
+
+  @Post('dashboardPastYear')
+  async dashboardPastYear(@Body() dto: any): Promise<any> {
+    try{
+      const responses = await this.paymentService.dashboardPastYear(dto)
+      return responses 
+
+    }catch(err){
+      console.log(err)
+      throw HandleErrorException(err);
+    }
+  }
+
+  @Post('dashboardPastMonth')
+  async dashboardPastMonth(@Body() dto: any): Promise<any> {
+    try{
+      const responses = await this.paymentService.dashboardPastMonth(dto)
+      return responses 
+    }catch(err){
+      console.log(err)
+      throw HandleErrorException(err);
+    }
+  }
+
+  @Post('dashboardPay')
+  async dashboardPay(): Promise<any> {
+    try{
+      const responses = await this.paymentService.dashboardPay()
+      return PaymentResponseVm.convertToViewModel(responses)  
+    }catch(err){
+      console.log(err)
+      throw HandleErrorException(err);
+    }
+  }
+
 
 }

@@ -32,30 +32,30 @@ export class PaymentService {
 
     async create(dto: CreatePaymentDto): Promise<any> {
         let saleItemModel = new SaleItemModel();
-        let saleItemUpdate 
+        let saleItemUpdate
         if (dto.saleItem_id) {
             saleItemModel = await this.saleItemService.findById(dto.saleItem_id)
             //เพิ่มคำนวนเเเละupdate saleItem
-             saleItemUpdate ={
-                id:saleItemModel.id,
-                dueDate:dayjs().add(1, 'month').format('YYYY-MM-DD'), //วันนัดชำระ
-                paymentAmount:Number(saleItemModel.paymentAmount||0) + Number(dto.amountPay||0), //จำนวนเงินที่ชำระแล้ว ,
-                remainingBalance:Number(saleItemModel.remainingBalance||0) - Number(dto.amountPay||0), //ยอดเงินคงเหลือ
-                totalInterest:Number(saleItemModel.totalInterest||0) + Number(dto.InterestPay||0), //ดอกเบี้ยที่ได้รับรวม
-                totalFee:Number(saleItemModel.totalFee||0)+Number(dto.fee||0)   // เพิ่ม รวมค่าปรับ
+            saleItemUpdate = {
+                id: saleItemModel.id,
+                dueDate: dayjs().add(1, 'month').format('YYYY-MM-DD'), //วันนัดชำระ
+                paymentAmount: Number(saleItemModel.paymentAmount || 0) + Number(dto.amountPay || 0), //จำนวนเงินที่ชำระแล้ว ,
+                remainingBalance: Number(saleItemModel.remainingBalance || 0) - Number(dto.amountPay || 0), //ยอดเงินคงเหลือ
+                totalInterest: Number(saleItemModel.totalInterest || 0) + Number(dto.InterestPay || 0), //ดอกเบี้ยที่ได้รับรวม
+                totalFee: Number(saleItemModel.totalFee || 0) + Number(dto.fee || 0)   // เพิ่ม รวมค่าปรับ
             }
         }
         const model: PaymentModel = plainToInstance(PaymentModel, {
             ...dto,
-            datePay:dayjs().add(1, 'month').format('YYYY-MM-DD'),
+            datePay: dayjs().add(1, 'month').format('YYYY-MM-DD'),
             saleItem: saleItemModel
-        }) 
+        })
         const createdPayment = await this.paymentRepository.save(model);
 
         const updateSaleItemDto: SaleItemModel = plainToInstance(SaleItemModel, saleItemUpdate as SaleItemModel)
         const updatedSaleItem = await this.saleItemService.update(updateSaleItemDto);
 
-        return {...createdPayment,saleItem:updatedSaleItem}
+        return { ...createdPayment, saleItem: updatedSaleItem }
     }
 
     async delete(model: PaymentModel): Promise<PaymentModel> {
@@ -66,34 +66,34 @@ export class PaymentService {
         let serachPaymentRequestVm: SearchPaymentDto = {
             page: 1,
             limit: 1000,
-            sortField:'id',
-            sortType:'DESC',
+            sortField: 'id',
+            sortType: 'DESC',
             filterModel: {
-              logicOperator: FilterModelLogicOperatorEnum.AND,
-              items: [
-                {
-                    field: 'saleItem_id',
-                    operator: FilterModelItemOperationEnum.EQUALS,
-                    value: findIdSaleitem.saleItem.id,
-                  },
-              ],
+                logicOperator: FilterModelLogicOperatorEnum.AND,
+                items: [
+                    {
+                        field: 'saleItem_id',
+                        operator: FilterModelItemOperationEnum.EQUALS,
+                        value: findIdSaleitem.saleItem.id,
+                    },
+                ],
             },
-          } as SearchPaymentDto;
-          const PaymentSearch = await this.paymentRepository.search(serachPaymentRequestVm);
-      
-        let saleItemModel =PaymentSearch.payments[0]?.saleItem || findIdSaleitem.saleItem
-        let saleItemUpdate 
-        saleItemUpdate ={
-            id:saleItemModel.id,
-            dueDate:PaymentSearch.totalItems>0?PaymentSearch.payments[0].datePay:undefined, //วันนัดชำระ
-            paymentAmount:Number(saleItemModel.paymentAmount||0) - Number(deletePayment.amountPay||0) , //จำนวนเงินที่ชำระแล้ว ,
-            remainingBalance:Number(saleItemModel.remainingBalance||0) + Number(deletePayment.amountPay||0), //ยอดเงินคงเหลือ
-            totalInterest:Number(saleItemModel.totalInterest||0) - Number(deletePayment.InterestPay||0), //ดอกเบี้ยที่ได้รับรวม
-            totalFee:Number(saleItemModel.totalFee||0)+Number(deletePayment.fee||0)   // เพิ่ม รวมค่าปรับ
+        } as SearchPaymentDto;
+        const PaymentSearch = await this.paymentRepository.search(serachPaymentRequestVm);
+
+        let saleItemModel = PaymentSearch.payments[0]?.saleItem || findIdSaleitem.saleItem
+        let saleItemUpdate
+        saleItemUpdate = {
+            id: saleItemModel.id,
+            dueDate: PaymentSearch.totalItems > 0 ? PaymentSearch.payments[0].datePay : undefined, //วันนัดชำระ
+            paymentAmount: Number(saleItemModel.paymentAmount || 0) - Number(deletePayment.amountPay || 0), //จำนวนเงินที่ชำระแล้ว ,
+            remainingBalance: Number(saleItemModel.remainingBalance || 0) + Number(deletePayment.amountPay || 0), //ยอดเงินคงเหลือ
+            totalInterest: Number(saleItemModel.totalInterest || 0) - Number(deletePayment.InterestPay || 0), //ดอกเบี้ยที่ได้รับรวม
+            totalFee: Number(saleItemModel.totalFee || 0) + Number(deletePayment.fee || 0)   // เพิ่ม รวมค่าปรับ
         }
         const updateSaleItemDto: SaleItemModel = plainToInstance(SaleItemModel, saleItemUpdate as SaleItemModel)
         const updatedSaleItem = await this.saleItemService.update(updateSaleItemDto);
-        return {...deletePayment,saleItem:updatedSaleItem}
+        return { ...deletePayment, saleItem: updatedSaleItem }
 
         // let sumPayment
         //   if(PaymentSearch.totalItems>1){
@@ -117,33 +117,100 @@ export class PaymentService {
 
     async closeInstallment(dto): Promise<any> {
         let saleItemModel = new SaleItemModel();
-        let saleItemUpdate 
+        let saleItemUpdate
         if (dto.saleItem_id) {
             saleItemModel = await this.saleItemService.findById(dto.saleItem_id)
             //เพิ่มคำนวนเเเละupdate saleItem
-             saleItemUpdate ={
-                id:saleItemModel.id,
-                dueDate:dayjs().format('YYYY-MM-DD'), //วันนัดชำระ
-                paymentAmount:Number(saleItemModel.paymentAmount||0) + Number(dto.amountPay||0), //จำนวนเงินที่ชำระแล้ว ,
-                remainingBalance:Number(saleItemModel.remainingBalance||0) - Number(dto.amountPay||0), //ยอดเงินคงเหลือ
-                totalInterest:Number(saleItemModel.totalInterest||0) + Number(dto.InterestPay||0), //ดอกเบี้ยที่ได้รับรวม
-                totalFee:Number(saleItemModel.totalFee||0)+Number(dto.fee||0),   // เพิ่ม รวมค่าปรับ
+            saleItemUpdate = {
+                id: saleItemModel.id,
+                dueDate: dayjs().format('YYYY-MM-DD'), //วันนัดชำระ
+                paymentAmount: Number(saleItemModel.paymentAmount || 0) + Number(dto.amountPay || 0), //จำนวนเงินที่ชำระแล้ว ,
+                remainingBalance: Number(saleItemModel.remainingBalance || 0) - Number(dto.amountPay || 0), //ยอดเงินคงเหลือ
+                totalInterest: Number(saleItemModel.totalInterest || 0) + Number(dto.InterestPay || 0), //ดอกเบี้ยที่ได้รับรวม
+                totalFee: Number(saleItemModel.totalFee || 0) + Number(dto.fee || 0),   // เพิ่ม รวมค่าปรับ
 
-                discount:Number(saleItemModel.discount||0)+Number(dto.discount||0),
-                statusInstallment:"Close"
+                discount: Number(saleItemModel.discount || 0) + Number(dto.discount || 0),
+                statusInstallment: "Close"
             }
         }
         const model: PaymentModel = plainToInstance(PaymentModel, {
             ...dto,
-            datePay:dayjs().format('YYYY-MM-DD'),
+            datePay: dayjs().format('YYYY-MM-DD'),
             saleItem: saleItemModel
-        }) 
+        })
         const createdPayment = await this.paymentRepository.save(model);
 
         const updateSaleItemDto: SaleItemModel = plainToInstance(SaleItemModel, saleItemUpdate as SaleItemModel)
         const updatedSaleItem = await this.saleItemService.update(updateSaleItemDto);
 
-        return {...createdPayment,saleItem:updatedSaleItem}
+        return { ...createdPayment, saleItem: updatedSaleItem }
+    }
+
+    async dashboardPastYear(dto) {
+        const paymentYear = await this.paymentRepository.dashboardPastYear(dto);
+        type PaymentSummary = {
+            [year: string]: {
+                totalPayment: number;
+            };
+        };
+
+        function summarizeSales(data): PaymentSummary {
+            const payment: PaymentSummary = {};
+
+            data.forEach(pay => {
+                const year = new Date(pay.createdAt).getFullYear().toString();
+                const totalPayment = parseFloat(pay.InterestPay) + parseFloat(pay.amountPay);
+
+                if (!payment[year]) {
+                    payment[year] = { totalPayment: 0 };
+                }
+                payment[year].totalPayment += totalPayment;
+            });
+
+            return payment;
+        }
+
+        const paymentSummary = summarizeSales(paymentYear.payments);
+
+        return paymentSummary
+    }
+
+    async dashboardPastMonth(dto):Promise<any>{
+        const paymentMounth = await this.paymentRepository.dashboardPastMonth(dto);
+
+        type PaymentSummary = {
+            [year: string]: {
+                totalPayment: number;
+            };
+        };
+
+        function summarizeSales(data): PaymentSummary {
+            const payment: PaymentSummary = {};
+        
+            data.forEach(pay => {
+                const date = new Date(pay.createdAt);
+                const yearMonth = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+                const totalPayment = parseFloat(pay.InterestPay) + parseFloat(pay.amountPay);
+        
+                if (!payment[yearMonth]) {
+                    payment[yearMonth] = { totalPayment: 0 };
+                }
+                payment[yearMonth].totalPayment += totalPayment;
+            });
+        
+            return payment;
+        }
+        
+        const paymentSummary = summarizeSales(paymentMounth.payments);
+
+        return paymentSummary
+
+    }
+
+    async dashboardPay():Promise<any>{
+        let  paymentYear =  await this.dashboardPastYear("")
+        let  paymentMonth =  await this.dashboardPastMonth("")
+        return {paymentYear:paymentYear,paymentMonth:paymentMonth}
     }
 
 }

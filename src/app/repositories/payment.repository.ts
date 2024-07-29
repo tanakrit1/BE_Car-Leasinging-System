@@ -79,4 +79,64 @@ export class PaymentRepository {
         }
     }
 
+
+    async dashboardPastYear(dto){
+        try {
+            const dayjs = require('dayjs');
+            let dateStart  = dayjs().subtract(5, 'year').format('YYYY-MM-DD')
+            const dateEnd = dayjs().format('YYYY-MM-DD');
+            const query = this.repository.createQueryBuilder('payment')
+            .select('payment')
+            .where(
+                'YEAR(payment.createdAt) BETWEEN YEAR(:dateStart) AND YEAR(:dateEnd)',
+                { dateStart, dateEnd }
+            );
+            query.orderBy(`payment.createdAt`, 'DESC');
+            const queryResult = await query.getManyAndCount();
+            const [payments, count] = queryResult;
+            return plainToInstance(PaymentPaginationModel, {
+                payments: payments,
+                totalItems: count,
+            } as PaymentPaginationModel);
+        } catch (err) {
+            throw new InternalServerErrorException(err.message + err?.query);
+        }
+    }
+
+    async dashboardPastMonth(dto){
+        try {
+            const startDate = new Date();
+    
+            // Calculate the date 5 months prior to startDate
+            const pastDate = new Date(startDate);
+            pastDate.setMonth(startDate.getMonth() - 5);
+    
+            // Extract years and months
+            const startYear = startDate.getFullYear();
+            const startMonth = startDate.getMonth() + 1; // getMonth() returns 0-11
+            const pastYear = pastDate.getFullYear();
+            const pastMonth = pastDate.getMonth() + 1;
+    
+            const query = this.repository.createQueryBuilder('payment')
+                .select('payment')
+                .where(
+                    '(YEAR(payment.createdAt) > :pastYear OR (YEAR(payment.createdAt) = :pastYear AND MONTH(payment.createdAt) >= :pastMonth))',
+                    { pastYear, pastMonth }
+                )
+                .andWhere(
+                    '(YEAR(payment.createdAt) < :startYear OR (YEAR(payment.createdAt) = :startYear AND MONTH(payment.createdAt) <= :startMonth))',
+                    { startYear, startMonth }
+                );
+                query.orderBy(`payment.createdAt`, 'DESC');
+            const queryResult = await query.getManyAndCount();
+            const [payments, count] = queryResult;
+            return plainToInstance(PaymentPaginationModel, {
+                payments: payments,
+                totalItems: count,
+            } as PaymentPaginationModel);
+        } catch (err) {
+            throw new InternalServerErrorException(err.message + err?.query);
+        }
+    }
+
 }
