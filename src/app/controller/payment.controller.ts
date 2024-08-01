@@ -108,7 +108,8 @@ export class PaymentController {
   async reportPayment(@Body() dto: any): Promise<any> {
     try{
       const responses = await this.paymentService.reportPayment(dto)
-      return PaymentResponseVm.convertToViewModel(responses)  
+      return responses
+      // return PaymentResponseVm.convertToViewModel(responses)  
     }catch(err){
       console.log(err)
       throw HandleErrorException(err);

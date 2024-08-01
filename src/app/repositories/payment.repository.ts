@@ -155,7 +155,16 @@ export class PaymentRepository {
                 .orderBy('payment.createdAt', 'DESC');
     
             const queryResult = await query.getRawOne();
-            return queryResult;
+
+            const queryTransection = this.repository.createQueryBuilder('payment')
+            .where(
+                'YEAR(payment.createdAt) = :startYear AND MONTH(payment.createdAt) = :startMonth',
+                { startYear, startMonth }
+            )
+            .orderBy('payment.createdAt', 'DESC');
+            const queryResultTran = await queryTransection.getMany();
+
+            return {Result:queryResult,Transection:queryResultTran};
         } catch (err) {
             throw new InternalServerErrorException(err.message + err?.query);
         }
