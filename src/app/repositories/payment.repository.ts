@@ -157,6 +157,7 @@ export class PaymentRepository {
             const queryResult = await query.getRawOne();
 
             const queryTransection = this.repository.createQueryBuilder('payment')
+            .leftJoinAndSelect('payment.saleItem', 'saleItem')
             .where(
                 'YEAR(payment.createdAt) = :startYear AND MONTH(payment.createdAt) = :startMonth',
                 { startYear, startMonth }
