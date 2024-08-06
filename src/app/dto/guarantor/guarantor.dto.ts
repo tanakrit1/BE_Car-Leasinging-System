@@ -10,26 +10,26 @@ export class CreateGuarantorDto {
 
     @IsOptional()
     @IsString()
-    @MaxLength(64, { message: 'guarantorName ต้องมีความยาวไม่เกิน' })
+    @MaxLength(64, { message: 'ชื่อผู้ค้ำ ต้องมีความยาวไม่เกิน' })
     guarantorName: string;	//ชื่อผู้ค้ำ
 
     @IsOptional()
     @IsString()
-    @MaxLength(256, { message: 'guarantorAddress ต้องมีความยาวไม่เกิน' })
+    @MaxLength(256, { message: 'ที่อยู่ผู้ค้ำ ต้องมีความยาวไม่เกิน' })
     guarantorAddress: string;	//ที่อยู่ผู้ค้ำ
 
     @IsOptional()
     @IsString()
-    @MaxLength(32, { message: 'guarantorIdCard ต้องมีความยาวไม่เกิน' })
+    @MaxLength(32, { message: 'บัตรประชาชน ต้องมีความยาวไม่เกิน' })
     guarantorIdCard: string;	//บัตรประชาชน
 
     @IsOptional()
     @IsString()
-    @MaxLength(16, { message: 'guarantorPhone ต้องมีความยาวไม่เกิน' })
+    @MaxLength(16, { message: 'เบอร์ติดต่อ ต้องมีความยาวไม่เกิน' })
     guarantorPhone: string;	//เบอร์ติดต่อ
 
     @IsOptional()
-    @IsNumber()
+    @IsNumber(undefined,{ message: 'saleItem_id ต้องเป็นชนิดตัวเลข' })
     saleItem_id?: number; 
 }
 
@@ -39,22 +39,22 @@ export class UpdateGuarantorDto {
     
     @IsOptional()
     @IsString()
-    @MaxLength(64, { message: 'guarantorName ต้องมีความยาวไม่เกิน' })
+    @MaxLength(64, { message: 'ชื่อผู้ค้ำ ต้องมีความยาวไม่เกิน' })
     guarantorName: string;	//ชื่อผู้ค้ำ
 
     @IsOptional()
     @IsString()
-    @MaxLength(256, { message: 'guarantorAddress ต้องมีความยาวไม่เกิน' })
+    @MaxLength(256, { message: 'ที่อยู่ผู้ค้ำ ต้องมีความยาวไม่เกิน' })
     guarantorAddress: string;	//ที่อยู่ผู้ค้ำ
 
     @IsOptional()
     @IsString()
-    @MaxLength(32, { message: 'guarantorIdCard ต้องมีความยาวไม่เกิน' })
+    @MaxLength(32, { message: 'บัตรประชาชน ต้องมีความยาวไม่เกิน' })
     guarantorIdCard: string;	//บัตรประชาชน
 
     @IsOptional()
     @IsString()
-    @MaxLength(16, { message: 'guarantorPhone ต้องมีความยาวไม่เกิน' })
+    @MaxLength(16, { message: 'เบอร์ติดต่อ ต้องมีความยาวไม่เกิน' })
     guarantorPhone: string;	//เบอร์ติดต่อ
 
 }
@@ -62,28 +62,28 @@ export class UpdateGuarantorDto {
 
 export class UpdateAdvanceGuarantorDto {
 
-    @IsNotEmpty()
-    @IsNumber()
-    id:number
+    @IsNotEmpty({ message: 'id ต้องไม่เป็นค่าว่าง' })
+    @IsNumber( undefined,{ message: 'id ต้องเป็นชนิดตัวเลข' })
+    id:number;
     
     @IsOptional()
     @IsString()
-    @MaxLength(64, { message: 'guarantorName ต้องมีความยาวไม่เกิน' })
+    @MaxLength(64, { message: 'ชื่อผู้ค้ำ ต้องมีความยาวไม่เกิน' })
     guarantorName: string;	//ชื่อผู้ค้ำ
 
     @IsOptional()
     @IsString()
-    @MaxLength(256, { message: 'guarantorAddress ต้องมีความยาวไม่เกิน' })
+    @MaxLength(256, { message: 'ที่อยู่ผู้ค้ำ ต้องมีความยาวไม่เกิน' })
     guarantorAddress: string;	//ที่อยู่ผู้ค้ำ
 
     @IsOptional()
     @IsString()
-    @MaxLength(32, { message: 'guarantorIdCard ต้องมีความยาวไม่เกิน' })
+    @MaxLength(32, { message: 'บัตรประชาชน ต้องมีความยาวไม่เกิน' })
     guarantorIdCard: string;	//บัตรประชาชน
 
     @IsOptional()
     @IsString()
-    @MaxLength(16, { message: 'guarantorPhone ต้องมีความยาวไม่เกิน' })
+    @MaxLength(16, { message: 'เบอร์ติดต่อ ต้องมีความยาวไม่เกิน' })
     guarantorPhone: string;	//เบอร์ติดต่อ
 
 }

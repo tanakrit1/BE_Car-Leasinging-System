@@ -21,19 +21,19 @@ export class SearchUserDto extends PaginationDto {
 
 export class CreateUserDto {
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'employeeID ต้องไม่เป็นค่าว่าง' })
   @IsString()
   @MaxLength(8, {message:'employeeID ต้องมีความยาวไม่เกิน 8 ตัวอักษร'
   })
   employeeID: string;
 
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'username ต้องไม่เป็นค่าว่าง' })
   @IsString()
   @MaxLength(16, {message:'username ต้องมีความยาวไม่เกิน 16 ตัวอักษร'})
   username: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'password ต้องไม่เป็นค่าว่าง' })
   @IsString()
   @MaxLength(8, {message:'password ต้องมีความยาวไม่เกิน 8 ตัวอักษร'})
   // @IsStrongPassword(
@@ -46,18 +46,18 @@ export class CreateUserDto {
   password: string;
 
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'firstName ต้องไม่เป็นค่าว่าง' })
   @IsString()
   @MaxLength(50, {message:'firstName ต้องมีความยาวไม่เกิน 50 ตัวอักษร'})
   firstName: string;
 
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'lastName ต้องไม่เป็นค่าว่าง' })
   @IsString()
   @MaxLength(50, {message:'lastName ต้องมีความยาวไม่เกิน 50 ตัวอักษร'})
   lastName: string;
 
-  @IsNotEmpty()
+  @IsNotEmpty({ message: 'role ต้องไม่เป็นค่าว่าง' })
   @IsString()
   role: string;
 

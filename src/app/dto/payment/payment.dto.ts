@@ -11,37 +11,37 @@ export class CreatePaymentDto {
 
     @IsOptional()
     @Transform(({ value }: TransformFnParams) => new Date(value))
-    @IsDate({message:'datePay ต้องเป็นวันที่'})
+    @IsDate({message:'วันที่ชำระ ต้องเป็นรูปแบบวันที่'})
     datePay: Date; //วันที่ชำระ
 
     @IsOptional()
-    @IsNumber()
+    @IsNumber( undefined,{ message: 'เงินต้นที่ชำระเเล้ว ต้องเป็นชนิดตัวเลข' })
     principalPay: number; //เงินต้นที่ชำระเเล้ว
 
     @IsOptional()
-    @IsNumber()
+    @IsNumber(undefined,{ message: 'ดอกเบี้ยที่ชำระเเล้ว ต้องเป็นชนิดตัวเลข' })
     InterestPay: number; //ดอกเบี้ยที่ชำระเเล้ว
 
     @IsOptional()
-    @IsNumber()
+    @IsNumber(undefined,{ message: 'ชำระแล้ว ต้องเป็นชนิดตัวเลข' })
     amountPay: number; //ชำระแล้ว
 
     @IsOptional()
-    @IsNumber()
+    @IsNumber(undefined,{ message: 'ยอดเงินคงเหลือ ต้องเป็นชนิดตัวเลข' })
     balancePay: number; //ยอดเงินคงเหลือ
 
     @IsOptional()
-    @IsNumber()
+    @IsNumber(undefined,{ message: 'ค่าปรับ ต้องเป็นชนิดตัวเลข' })
     fee: number; //ค่าปรับ
 
     @IsOptional()
     @IsString()
-    @MaxLength(16, { message: 'methodPay ต้องมีความยาวไม่เกิน' })
+    @MaxLength(16, { message: 'การชำระ ต้องมีความยาวไม่เกิน' })
     methodPay: string; //การชำระ(เงินสด/เงินโอน)
 
     @IsOptional()
     @IsString()
-    @MaxLength(64, { message: 'receiver ต้องมีความยาวไม่เกิน' })
+    @MaxLength(64, { message: 'ผู้รับเงิน ต้องมีความยาวไม่เกิน' })
     receiver: string; //ผู้รับเงิน
 
     @IsOptional()
@@ -54,8 +54,8 @@ export class CreatePaymentDto {
     @MaxLength(64, { message: 'bank ต้องมีความยาวไม่เกิน' })
     bank: string; //bank
 
-    @IsNotEmpty()
-    @IsNumber()
+    @IsNotEmpty({ message: 'saleItem_id ต้องไม่เป็นค่าว่าง' })
+    @IsNumber(undefined,{ message: 'saleItem_id ต้องเป็นชนิดตัวเลข' })
     saleItem_id?: number; 
 
 }
