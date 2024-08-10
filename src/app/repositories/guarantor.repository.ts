@@ -75,6 +75,27 @@ export class GuarantorRepository {
           throw new InternalServerErrorException(err.message + err?.query);
         }
       }
+
+      async findByIdSaleItem(id: number): Promise<GuarantorModel[]> {
+        try {
+          const carInformation: GuarantorModel[] = await this.repository.find({
+            where: {saleItem:{id:id}},
+          });
+          return carInformation;
+        } catch (err) {
+          throw new InternalServerErrorException(err.message + err?.query);
+        }
+      }
+
+      // async deleteMany(model: GuarantorModel[]): Promise<GuarantorModel[]> {
+      //   try {
+      //     const entity: GuarantorModel[] = this.repository.create(model);
+      //     const deleted: GuarantorModel[] = await this.repository.softRemove(entity);
+      //     return deleted;
+      //   } catch (err) {
+      //     throw new InternalServerErrorException(err.message + err?.query);
+      //   }
+      // }
 }
 
 

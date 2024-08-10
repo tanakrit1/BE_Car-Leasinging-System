@@ -10,6 +10,6 @@ import { SaleItemModule } from "./saleItem.module";
     imports: [TypeOrmModule.forFeature([Guarantor]),forwardRef(() =>SaleItemModule) ],
     controllers: [GuarantorController],
     providers: [GuarantorService, GuarantorRepository],
-    exports: [GuarantorService],
+    exports: [GuarantorService,GuarantorRepository],
 })
 export class GuarantorModule { }

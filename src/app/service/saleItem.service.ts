@@ -23,6 +23,10 @@ export class SaleItemService {
         return await this.saleItemRepository.findById(id);
     }
 
+    async findByIdDelete(id: number): Promise<SaleItemModel> {
+        return await this.saleItemRepository.findByIdDelete(id);
+    }
+
     async search(dto): Promise<SaleItemPaginationModel> {
         const models = await this.saleItemRepository.search(dto);
         return models
@@ -71,9 +75,9 @@ export class SaleItemService {
 
         const model: SaleItemModel = plainToInstance(SaleItemModel, {
             ...dto,
-            contractDate:dto.contractDate,
-            dueDate:dto.contractDate,
-            remainingBalance:dto.totalOrder,
+            contractDate: dto.contractDate,
+            dueDate: dto.contractDate,
+            remainingBalance: dto.totalOrder,
             carInformation: carInformationModel
         })
         const createsaleItem = await this.saleItemRepository.save(model);
@@ -119,8 +123,8 @@ export class SaleItemService {
         return { ...updatesaleItem, carInformation: carInformationModel, guarantors: guarantorModel }
     }
 
-    async summarySalesPastYear(dto):Promise<any>{
-        const saleItemYear= await this.saleItemRepository.summarySalesPastYear(dto);
+    async summarySalesPastYear(dto): Promise<any> {
+        const saleItemYear = await this.saleItemRepository.summarySalesPastYear(dto);
 
         type SalesSummary = {
             [year: string]: {
@@ -131,29 +135,29 @@ export class SaleItemService {
 
         function summarizeSales(data): SalesSummary {
             const summary: SalesSummary = {};
-        
+
             data.forEach(sale => {
                 const year = new Date(sale.createdAt).getFullYear().toString();
-                const payment = parseFloat(sale.downPayment)+parseFloat(sale.totalOrder);
-        
+                const payment = parseFloat(sale.downPayment) + parseFloat(sale.totalOrder);
+
                 if (!summary[year]) {
                     summary[year] = { total: 0, payment: 0 };
                 }
-        
+
                 summary[year].total += 1;
                 summary[year].payment += payment;
             });
-        
+
             return summary;
         }
-        
+
         const salesSummary = summarizeSales(saleItemYear.saleItems);
 
         return salesSummary
     }
 
-    async summarySalesPastMonth(dto):Promise<any>{
-        const saleItemMonth= await this.saleItemRepository.summarySalesPastMonth(dto);
+    async summarySalesPastMonth(dto): Promise<any> {
+        const saleItemMonth = await this.saleItemRepository.summarySalesPastMonth(dto);
         // return saleItemMonth
         type SalesSummary = {
             [year: string]: {
@@ -164,36 +168,60 @@ export class SaleItemService {
 
         function summarizeSales(data): SalesSummary {
             const summary: SalesSummary = {};
-        
+
             data.forEach(sale => {
                 const year = new Date(sale.createdAt).getFullYear().toString();
-                const payment = parseFloat(sale.downPayment)+parseFloat(sale.totalOrder);
-        
+                const payment = parseFloat(sale.downPayment) + parseFloat(sale.totalOrder);
+
                 if (!summary[year]) {
                     summary[year] = { total: 0, payment: 0 };
                 }
-        
+
                 summary[year].total += 1;
                 summary[year].payment += payment;
             });
-        
+
             return summary;
         }
-        
+
         const salesSummary = summarizeSales(saleItemMonth.saleItems);
 
         return salesSummary
     }
 
-    async maxid():Promise<SaleItemModel>{
-        const maxid= await this.saleItemRepository.maxid();
+    async maxid(): Promise<SaleItemModel> {
+        const maxid = await this.saleItemRepository.maxid();
         return maxid
     }
 
-    async summarySalesPast():Promise<any>{
-        let  saleYear =  await this.summarySalesPastYear("")
-        let  saleMonth =  await this.summarySalesPastMonth("")
-        return {saleYear:saleYear,saleMonth:saleMonth}
+    async summarySalesPast(): Promise<any> {
+        let saleYear = await this.summarySalesPastYear("")
+        let saleMonth = await this.summarySalesPastMonth("")
+        return { saleYear: saleYear, saleMonth: saleMonth }
+    }
+
+
+    async delete(
+        models: SaleItemModel,
+    ): Promise<SaleItemModel> {
+
+        let carInformationModel = new CarInformationModel();
+        let carInformation_id = models?.carInformation?.id
+        let deleted = await this.saleItemRepository.delete(models);
+
+        if(deleted){
+            if (carInformation_id) {
+                carInformationModel = await this.carInformationService.findById(carInformation_id)
+                if (carInformationModel) {
+                    const updateCarInformationDto: CarInformationModel = plainToInstance(CarInformationModel, {
+                        id:carInformationModel.id,
+                        carStatus:'stock'
+                    } as CarInformationModel)
+                    carInformationModel = await this.carInformationService.update(updateCarInformationDto)
+                }
+            }
+        }
+        return deleted
     }
 
 }

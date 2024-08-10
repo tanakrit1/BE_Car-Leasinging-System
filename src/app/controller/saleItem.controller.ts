@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from "@nestjs/common";
 import { SaleItemService } from "../service/saleItem.service";
 import { CreateAdvanceSaleItemDto, CreateSaleItemDto, SearchSaleItemDto, UpdateAdvanceSaleItemDto, UpdateSaleItemDto } from "../dto/saleitem/saleitem.dto";
 import { SaleItemPaginationVm, SaleItemResponseVm } from "../view-model/saleitem/saleitem.vm";
@@ -13,6 +13,26 @@ export class SaleItemController {
     constructor(
         private readonly saleItemService: SaleItemService
     ) { }
+
+   
+    @Delete('/:id')
+    async delete(@Param('id') parametersId: number): Promise<any> { //SaleItemResponseVm
+      try {
+          const saleitemId = Number(parametersId);
+        const saleitem = await this.saleItemService.findByIdDelete(saleitemId);
+        if (!saleitem) {
+          throw new NotFoundException(
+            { field: 'id', value: parametersId },
+            `ไม่พบข้อมูลของ saleitem ID ${parametersId}`,
+          );
+        }
+        const deleted: any = await this.saleItemService.delete(saleitem);
+        return SaleItemResponseVm.convertToViewModel(deleted);
+      } catch (err) {
+        console.log(err)
+        throw HandleErrorException(err);
+      }
+    }
 
     @Post('search')
     async search(@Body() dto: SearchSaleItemDto): Promise<SaleItemPaginationVm> {

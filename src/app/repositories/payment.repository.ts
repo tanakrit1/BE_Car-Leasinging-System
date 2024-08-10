@@ -171,4 +171,14 @@ export class PaymentRepository {
         }
     }
 
+    // async deleteMany(model: PaymentModel[]): Promise<PaymentModel[]> {
+    //     try {
+    //       const entity: PaymentModel[] = this.repository.create(model);
+    //       const deleted: PaymentModel[] = await this.repository.softRemove(entity);
+    //       return deleted;
+    //     } catch (err) {
+    //       throw new InternalServerErrorException(err.message + err?.query);
+    //     }
+    //   }
+
 }

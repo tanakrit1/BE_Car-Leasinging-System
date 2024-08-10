@@ -6,9 +6,10 @@ import { SaleItemService } from "../service/saleItem.service";
 import { SaleItemRepository } from "../repositories/saleItem.repository";
 import { CarInformationModule } from "./carInformation.module";
 import { GuarantorModule } from "./guarantor.module";
+import { PaymentModule } from "./payment.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([SaleItem]),CarInformationModule, forwardRef(() =>GuarantorModule)],
+    imports: [TypeOrmModule.forFeature([SaleItem]),CarInformationModule, forwardRef(() =>GuarantorModule),forwardRef(() =>PaymentModule)],
     controllers: [SaleItemController],
     providers: [SaleItemService, SaleItemRepository],
     exports: [SaleItemService],
