@@ -207,17 +207,23 @@ export class SaleItemService {
 
         let carInformationModel = new CarInformationModel();
         let carInformation_id = models?.carInformation?.id
+        let saleItem_saleType = models?.saleType
         let deleted = await this.saleItemRepository.delete(models);
 
         if(deleted){
             if (carInformation_id) {
                 carInformationModel = await this.carInformationService.findById(carInformation_id)
-                if (carInformationModel) {
+                if (carInformationModel&&saleItem_saleType == 'buy') {
                     const updateCarInformationDto: CarInformationModel = plainToInstance(CarInformationModel, {
                         id:carInformationModel.id,
                         carStatus:'stock'
                     } as CarInformationModel)
                     carInformationModel = await this.carInformationService.update(updateCarInformationDto)
+                }else if(carInformationModel&&saleItem_saleType == 'pledge'){
+
+                    await this.carInformationService.delete(carInformationModel)
+                }else{
+                    await this.carInformationService.delete(carInformationModel)
                 }
             }
         }

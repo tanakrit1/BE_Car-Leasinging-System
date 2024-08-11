@@ -57,7 +57,7 @@ export class SaleItemRepository {
     async findByIdDelete(id: number): Promise<SaleItemModel> {
         try {
             const carInformation: SaleItemModel = await this.repository.findOne({
-                select: { id: true, payments: { id: true } },
+                select: { id: true,saleType:true, payments: { id: true } },
                 relations: {
                     payments: true,
                     carInformation:true
