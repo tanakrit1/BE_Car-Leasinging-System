@@ -54,6 +54,16 @@ export class CreatePaymentDto {
     @MaxLength(64, { message: 'bank ต้องมีความยาวไม่เกิน' })
     bank: string; //bank
 
+    @IsOptional()
+    @IsString()
+    @MaxLength(128, { message: 'ชื่อบัญชี ต้องมีความยาวไม่เกิน' })
+    accountName: string; //ชื่อบัญชี
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(64, { message: 'เลขที่บัญชี ต้องมีความยาวไม่เกิน' })
+    accountNumber: string; //เลขที่บัญชี
+
     @IsNotEmpty({ message: 'saleItem_id ต้องไม่เป็นค่าว่าง' })
     @IsNumber(undefined,{ message: 'saleItem_id ต้องเป็นชนิดตัวเลข' })
     saleItem_id?: number; 

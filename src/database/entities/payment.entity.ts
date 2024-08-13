@@ -75,6 +75,12 @@ export class Payment extends BaseEntity {
     @Column({ name: 'receiver', type: 'nvarchar', length: 64, nullable: true })
     receiver: string; //ผู้รับเงิน
 
+    @Column({ name: 'accountName', type: 'nvarchar', length: 128, nullable: true })
+    accountName: string; //ชื่อบัญชี
+
+    @Column({ name: 'accountNumber', type: 'nvarchar', length: 64, nullable: true })
+    accountNumber : string; //เลขที่บัญชี
+
     @ManyToOne(() => SaleItem, (saleItem) => saleItem.payments, { nullable: true })
     saleItem: SaleItem;
 
