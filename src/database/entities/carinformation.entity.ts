@@ -91,6 +91,21 @@ export class CarInformation extends BaseEntity {
     @Column({ name: 'carType', type: 'nvarchar', length: 64, nullable: true })
     carType: string;	//ประเภทขายรถ,ค้ำ
 
+    @Column({ name: 'carRemarks', type: 'nvarchar', length: 256, nullable: true })
+    carRemarks: string;	//หมายเหตุ
+
+    @Column({ name: 'carCategory', type: 'nvarchar', length: 64, nullable: true })
+    carCategory: string;	//หมวดหมู่รถ
+
+    @Column({
+        name: 'purchaseDate',
+        type: 'date',
+        nullable: true,
+        comment: ' วันที่ซื้อเข้า',
+    })
+    purchaseDate: Date; // วันที่ซื้อเข้า
+
+
     @OneToMany(() => SaleItem, (saleItem) => saleItem.carInformation)
     saleItems: SaleItem[];
 

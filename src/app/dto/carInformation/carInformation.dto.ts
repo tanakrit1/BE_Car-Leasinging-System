@@ -1,6 +1,7 @@
-import { IsNumber, IsOptional, IsString, MaxLength } from "class-validator";
+import { IsDate, IsNumber, IsOptional, IsString, MaxLength } from "class-validator";
 import { CarInformation } from "src/database/entities/carinformation.entity";
 import { PaginationDto } from "../base/base.dto";
+import { Transform, TransformFnParams } from "class-transformer";
 
 export class CarInformationDto extends CarInformation { }
 
@@ -86,6 +87,21 @@ export class CreateCarInformationDto {
     @IsOptional()
     @IsNumber(undefined,{ message: 'กำไรที่ต้องการ ต้องเป็นชนิดตัวเลข' })
     desiredProfit: number; //กำไรที่ต้องการ
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุ ต้องมีความยาวไม่เกิน' })
+    carRemarks: string; //หมายเหตุ
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(64, { message: 'หมวดหมู่รถ ต้องมีความยาวไม่เกิน' })
+    carCategory: string; //หมวดหมู่รถ
+
+    @IsOptional()
+    @Transform(({ value }: TransformFnParams) => new Date(value))
+    @IsDate({message:'วันที่ซื้อเข้า ต้องเป็นรูปแบบวันที่'})
+    purchaseDate: Date; //วันที่ซื้อเข้า
 }
 
 export class UpdateInformationDto {
@@ -168,6 +184,21 @@ export class UpdateInformationDto {
     @IsOptional()
     @IsNumber(undefined,{ message: 'กำไรที่ต้องการ ต้องเป็นชนิดตัวเลข' })
     desiredProfit: number; //กำไรที่ต้องการ
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุ ต้องมีความยาวไม่เกิน' })
+    carRemarks: string; //หมายเหตุ
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(64, { message: 'หมวดหมู่รถ ต้องมีความยาวไม่เกิน' })
+    carCategory: string; //หมวดหมู่รถ
+
+    @IsOptional()
+    @Transform(({ value }: TransformFnParams) => new Date(value))
+    @IsDate({message:'วันที่ซื้อเข้า ต้องเป็นรูปแบบวันที่'})
+    purchaseDate: Date; //วันที่ซื้อเข้า
 
 
 }
