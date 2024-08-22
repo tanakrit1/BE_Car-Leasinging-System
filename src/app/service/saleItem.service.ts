@@ -195,9 +195,9 @@ export class SaleItemService {
     }
 
     async summarySalesPast(): Promise<any> {
-        let saleYear = await this.summarySalesPastYear("")
+        // let saleYear = await this.summarySalesPastYear("")
         let saleMonth = await this.summarySalesPastMonth("")
-        return { saleYear: saleYear, saleMonth: saleMonth }
+        return {saleMonth: saleMonth}
     }
 
 

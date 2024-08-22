@@ -17,6 +17,9 @@ export class Guarantor extends BaseEntity {
     @Column({ name: 'guarantorPhone', type: 'nvarchar', length: 16, nullable: true })
     guarantorPhone: string;	//เบอร์ติดต่อ
 
+    @Column({ name: 'guarantorImage', type: 'longtext', nullable: true })
+    guarantorImage: string;	//รูปภาพ
+
     @ManyToOne(() => SaleItem, (saleItem) => saleItem.guarantors, { nullable: true })
     saleItem: SaleItem;
 

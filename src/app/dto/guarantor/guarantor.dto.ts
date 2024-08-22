@@ -31,6 +31,10 @@ export class CreateGuarantorDto {
     @IsOptional()
     @IsNumber(undefined,{ message: 'saleItem_id ต้องเป็นชนิดตัวเลข' })
     saleItem_id?: number; 
+
+    @IsOptional()
+    @IsString()
+    guarantorImage: string;	//รูปภาพ
 }
 
 export class UpdateGuarantorDto {
@@ -56,6 +60,10 @@ export class UpdateGuarantorDto {
     @IsString()
     @MaxLength(16, { message: 'เบอร์ติดต่อ ต้องมีความยาวไม่เกิน' })
     guarantorPhone: string;	//เบอร์ติดต่อ
+
+    @IsOptional()
+    @IsString()
+    guarantorImage: string;	//รูปภาพ
 
 }
 
@@ -85,5 +93,8 @@ export class UpdateAdvanceGuarantorDto {
     @IsString()
     @MaxLength(16, { message: 'เบอร์ติดต่อ ต้องมีความยาวไม่เกิน' })
     guarantorPhone: string;	//เบอร์ติดต่อ
-
+    
+    @IsOptional()
+    @IsString()
+    guarantorImage: string;	//รูปภาพ
 }

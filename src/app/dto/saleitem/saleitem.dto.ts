@@ -379,6 +379,15 @@ export class CreateAdvanceSaleItemDto {
      @IsNumber(undefined,{ message: 'กำไรที่ต้องการ ต้องเป็นชนิดตัวเลข' })
      desiredProfit?: number; //กำไรที่ต้องการ
 
+     @IsOptional()
+     @IsNumber(undefined,{ message: 'ราคาอื่นๆ ต้องเป็นชนิดตัวเลข' })
+     priceOther?: number; //	ราคาอื่นๆ
+ 
+     @IsOptional()
+     @IsString()
+     @MaxLength(256, { message: 'หมายเหตุอื่นๆ ต้องมีความยาวไม่เกิน' })
+     noteOther?: string;	//หมายเหตุอื่นๆ
+
     @IsArray()
     @IsOptional()
     @ValidateNested({ each: true })
@@ -565,6 +574,15 @@ export class UpdateAdvanceSaleItemDto {
     @IsOptional()
     @IsNumber(undefined,{ message: 'กำไรที่ต้องการ ต้องเป็นชนิดตัวเลข' })
     desiredProfit?: number; //กำไรที่ต้องการ
+
+    @IsOptional()
+    @IsNumber(undefined,{ message: 'ราคาอื่นๆ ต้องเป็นชนิดตัวเลข' })
+    priceOther?: number; //	ราคาอื่นๆ
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุอื่นๆ ต้องมีความยาวไม่เกิน' })
+    noteOther?: string;	//หมายเหตุอื่นๆ
 
 
     //-------------------------guarantor---------------------//

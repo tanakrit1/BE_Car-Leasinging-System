@@ -105,6 +105,18 @@ export class CarInformation extends BaseEntity {
     })
     purchaseDate: Date; // วันที่ซื้อเข้า
 
+    @Column({
+        name: 'priceOther',
+        type: 'decimal',
+        precision: 18,
+        scale: 2,
+        nullable: true,
+        comment: 'priceOther',
+    })
+    priceOther: number; //	ราคาอื่นๆ
+
+    @Column({ name: 'noteOther', type: 'nvarchar', length: 256, nullable: true })
+    noteOther: string;	//หมายเหตุอื่นๆ
 
     @OneToMany(() => SaleItem, (saleItem) => saleItem.carInformation)
     saleItems: SaleItem[];

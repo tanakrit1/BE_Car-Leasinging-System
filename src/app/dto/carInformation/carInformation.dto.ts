@@ -102,6 +102,15 @@ export class CreateCarInformationDto {
     @Transform(({ value }: TransformFnParams) => new Date(value))
     @IsDate({message:'วันที่ซื้อเข้า ต้องเป็นรูปแบบวันที่'})
     purchaseDate: Date; //วันที่ซื้อเข้า
+
+    @IsOptional()
+    @IsNumber(undefined,{ message: 'ราคาอื่นๆ ต้องเป็นชนิดตัวเลข' })
+    priceOther: number; //	ราคาอื่นๆ
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุอื่นๆ ต้องมีความยาวไม่เกิน' })
+    noteOther: string;	//หมายเหตุอื่นๆ
 }
 
 export class UpdateInformationDto {
@@ -200,5 +209,12 @@ export class UpdateInformationDto {
     @IsDate({message:'วันที่ซื้อเข้า ต้องเป็นรูปแบบวันที่'})
     purchaseDate: Date; //วันที่ซื้อเข้า
 
+    @IsOptional()
+    @IsNumber(undefined,{ message: 'ราคาอื่นๆ ต้องเป็นชนิดตัวเลข' })
+    priceOther: number; //	ราคาอื่นๆ
 
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุอื่นๆ ต้องมีความยาวไม่เกิน' })
+    noteOther: string;	//หมายเหตุอื่นๆ
 }
