@@ -174,8 +174,31 @@ export class PaymentRepository {
             const carInformation = await this.CarInformationRepository.reportPayment(startYear,startMonth)
 
             const saleItem = await this.saleItemRepository.sumRemainingBalance()
+
+            let totalInstallmentBal = 0
+            saleItem.queryResult2.forEach(saleitem => {
+                const numInstallments = saleitem.numInstallments&& parseFloat(saleitem.numInstallments)||0;
+                const interestRate = saleitem.interestRate||0;
+                const totalOrder = saleitem.totalOrder||0;
+                const paymentAmount = Number(saleitem.paymentAmount)||0;
+                const totalInterest = Number(saleitem.totalInterest)||0;
     
-            return {Result:{...queryResult,totalCost:carInformation?.totalCost||0,totalInstallmentBal:saleItem},Transection:queryResultTran};
+                // totalInstallmentBal +=((Math.ceil((totalOrder / numInstallments)) + Math.ceil((totalOrder * interestRate / 100))) * numInstallments) - Math.ceil((0 + 0));
+                const interestAmount = Math.ceil(totalOrder * interestRate / 100);
+                const installmentAmount = Math.ceil(totalOrder / numInstallments + interestAmount);
+                const totalInstallments = Math.ceil(installmentAmount * numInstallments);
+                const installmentBalance = Math.ceil(totalInstallments - (paymentAmount + totalInterest));
+                totalInstallmentBal += installmentBalance;
+               
+            });
+            return {
+                Result:{
+                    ...queryResult,
+                    totalCost:carInformation?.totalCost||0,
+                    totalInstallmentBal: totalInstallmentBal+Number(saleItem.queryResult1.remainingBalance),
+                },
+                Transection:queryResultTran
+            };
 
         } catch (err) {
             throw new InternalServerErrorException(err.message + err?.query);
