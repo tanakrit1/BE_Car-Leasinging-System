@@ -115,8 +115,8 @@ export class CarInformation extends BaseEntity {
     })
     priceOther: number; //	ราคาอื่นๆ
 
-    @Column({ name: 'noteOther', type: 'nvarchar', length: 256, nullable: true })
-    noteOther: string;	//หมายเหตุอื่นๆ
+    @Column({ name: 'productOther', type: 'nvarchar', length: 256, nullable: true })
+    productOther: string;	//สินค้าอื่นๆ
 
     @OneToMany(() => SaleItem, (saleItem) => saleItem.carInformation)
     saleItems: SaleItem[];

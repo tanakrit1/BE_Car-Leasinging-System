@@ -95,4 +95,16 @@ export class CarInformationRepository {
           throw new InternalServerErrorException(err.message + err?.query);
       }
   }
+
+  async reportPayment(startYear, startMonth){
+    const query = this.repository.createQueryBuilder('carInformation')
+    .select('SUM(COALESCE(carInformation.cost, 0))', 'totalCost')
+    .where(
+        'YEAR(carInformation.purchaseDate) = :startYear AND MONTH(carInformation.purchaseDate) = :startMonth',
+        { startYear, startMonth }
+    )
+    .orderBy('carInformation.purchaseDate', 'DESC');
+    const queryResult = await query.getRawOne();
+    return queryResult
+  }
 }

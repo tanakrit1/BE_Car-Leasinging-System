@@ -5,12 +5,14 @@ import { Repository } from "typeorm";
 import { PaymentModel, PaymentPaginationModel } from "../models/payment.model";
 import { applyRepositoryFilterModel, applyRepositoryQuickFilter, applyRepositorySortingModel } from "../utils/repository.utils";
 import { plainToInstance } from "class-transformer";
+import { CarInformationRepository } from "./carInformation.repository";
 
 @Injectable()
 export class PaymentRepository {
     constructor(
         @InjectRepository(Payment)
-        private readonly repository: Repository<Payment>
+        private readonly repository: Repository<Payment>,
+        private readonly CarInformationRepository:CarInformationRepository
     ) { }
 
     async findById(id: number): Promise<PaymentModel> {
@@ -165,7 +167,10 @@ export class PaymentRepository {
             .orderBy('payment.createdAt', 'DESC');
             const queryResultTran = await queryTransection.getMany();
 
-            return {Result:queryResult,Transection:queryResultTran};
+            const carInformation = await this.CarInformationRepository.reportPayment(startYear,startMonth)
+    
+            return {Result:{...queryResult,totalCost:carInformation?.totalCost||0,totalInstallmentBal:1000},Transection:queryResultTran};
+            
         } catch (err) {
             throw new InternalServerErrorException(err.message + err?.query);
         }

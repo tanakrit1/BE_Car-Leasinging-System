@@ -109,8 +109,8 @@ export class CreateCarInformationDto {
 
     @IsOptional()
     @IsString()
-    @MaxLength(256, { message: 'หมายเหตุอื่นๆ ต้องมีความยาวไม่เกิน' })
-    noteOther: string;	//หมายเหตุอื่นๆ
+    @MaxLength(256, { message: 'สินค้าอื่นๆ ต้องมีความยาวไม่เกิน' })
+    productOther: string;	//สินค้าอื่นๆ
 }
 
 export class UpdateInformationDto {
@@ -215,6 +215,6 @@ export class UpdateInformationDto {
 
     @IsOptional()
     @IsString()
-    @MaxLength(256, { message: 'หมายเหตุอื่นๆ ต้องมีความยาวไม่เกิน' })
-    noteOther: string;	//หมายเหตุอื่นๆ
+    @MaxLength(256, { message: 'สินค้าอื่นๆ ต้องมีความยาวไม่เกิน' })
+    productOther: string;	//สินค้าอื่นๆ
 }

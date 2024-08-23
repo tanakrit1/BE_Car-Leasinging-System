@@ -385,8 +385,8 @@ export class CreateAdvanceSaleItemDto {
  
      @IsOptional()
      @IsString()
-     @MaxLength(256, { message: 'หมายเหตุอื่นๆ ต้องมีความยาวไม่เกิน' })
-     noteOther?: string;	//หมายเหตุอื่นๆ
+     @MaxLength(256, { message: 'สินค้าอื่นๆ ต้องมีความยาวไม่เกิน' })
+     productOther?: string;	//สินค้าอื่นๆ
 
     @IsArray()
     @IsOptional()
@@ -581,8 +581,8 @@ export class UpdateAdvanceSaleItemDto {
 
     @IsOptional()
     @IsString()
-    @MaxLength(256, { message: 'หมายเหตุอื่นๆ ต้องมีความยาวไม่เกิน' })
-    noteOther?: string;	//หมายเหตุอื่นๆ
+    @MaxLength(256, { message: 'สินค้าอื่นๆ ต้องมีความยาวไม่เกิน' })
+    productOther?: string;	//สินค้าอื่นๆ
 
 
     //-------------------------guarantor---------------------//
