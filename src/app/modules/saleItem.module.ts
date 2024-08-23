@@ -12,6 +12,6 @@ import { PaymentModule } from "./payment.module";
     imports: [TypeOrmModule.forFeature([SaleItem]),CarInformationModule, forwardRef(() =>GuarantorModule),forwardRef(() =>PaymentModule)],
     controllers: [SaleItemController],
     providers: [SaleItemService, SaleItemRepository],
-    exports: [SaleItemService],
+    exports: [SaleItemService,SaleItemRepository],
 })
 export class SaleItemModule { }

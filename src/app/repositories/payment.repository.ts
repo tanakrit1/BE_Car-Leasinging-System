@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { forwardRef, Inject, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Payment } from "src/database/entities/payment.entity";
 import { Repository } from "typeorm";
@@ -6,13 +6,16 @@ import { PaymentModel, PaymentPaginationModel } from "../models/payment.model";
 import { applyRepositoryFilterModel, applyRepositoryQuickFilter, applyRepositorySortingModel } from "../utils/repository.utils";
 import { plainToInstance } from "class-transformer";
 import { CarInformationRepository } from "./carInformation.repository";
+import { SaleItemRepository } from "./saleItem.repository";
 
 @Injectable()
 export class PaymentRepository {
     constructor(
         @InjectRepository(Payment)
         private readonly repository: Repository<Payment>,
-        private readonly CarInformationRepository:CarInformationRepository
+        private readonly CarInformationRepository:CarInformationRepository,
+        @Inject(forwardRef(() => SaleItemRepository))
+        private readonly saleItemRepository:SaleItemRepository
     ) { }
 
     async findById(id: number): Promise<PaymentModel> {
@@ -160,6 +163,7 @@ export class PaymentRepository {
 
             const queryTransection = this.repository.createQueryBuilder('payment')
             .leftJoinAndSelect('payment.saleItem', 'saleItem')
+            .leftJoinAndSelect('saleItem.carInformation', 'carInformation')
             .where(
                 'YEAR(payment.createdAt) = :startYear AND MONTH(payment.createdAt) = :startMonth',
                 { startYear, startMonth }
@@ -168,9 +172,11 @@ export class PaymentRepository {
             const queryResultTran = await queryTransection.getMany();
 
             const carInformation = await this.CarInformationRepository.reportPayment(startYear,startMonth)
+
+            const saleItem = await this.saleItemRepository.sumRemainingBalance()
     
-            return {Result:{...queryResult,totalCost:carInformation?.totalCost||0,totalInstallmentBal:1000},Transection:queryResultTran};
-            
+            return {Result:{...queryResult,totalCost:carInformation?.totalCost||0,totalInstallmentBal:saleItem},Transection:queryResultTran};
+
         } catch (err) {
             throw new InternalServerErrorException(err.message + err?.query);
         }

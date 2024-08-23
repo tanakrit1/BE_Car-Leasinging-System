@@ -67,7 +67,7 @@ export class SaleItemService {
         } else {
             const modelCarInformation: CarInformationModel = plainToInstance(CarInformationModel, {
                 ...dto,
-                carType: "pledge",
+                // carType: "pledge",
                 carStatus: "sold"
             } as CarInformationModel)
             carInformationModel = await this.carInformationService.create(modelCarInformation)

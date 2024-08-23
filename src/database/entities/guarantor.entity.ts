@@ -20,6 +20,10 @@ export class Guarantor extends BaseEntity {
     @Column({ name: 'guarantorImage', type: 'longtext', nullable: true })
     guarantorImage: string;	//รูปภาพ
 
+    @Column({ name: 'guarantorGPS', type: 'nvarchar', length: 128, nullable: true })
+    guarantorGPS: string;	//guarantorGPS
+    
+
     @ManyToOne(() => SaleItem, (saleItem) => saleItem.guarantors, { nullable: true })
     saleItem: SaleItem;
 

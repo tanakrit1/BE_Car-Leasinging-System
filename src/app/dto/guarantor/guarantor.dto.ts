@@ -35,6 +35,11 @@ export class CreateGuarantorDto {
     @IsOptional()
     @IsString()
     guarantorImage: string;	//รูปภาพ
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(128, { message: 'guarantorGPS ต้องมีความยาวไม่เกิน' })
+    guarantorGPS: string;	//guarantorGPS
 }
 
 export class UpdateGuarantorDto {
@@ -64,6 +69,12 @@ export class UpdateGuarantorDto {
     @IsOptional()
     @IsString()
     guarantorImage: string;	//รูปภาพ
+
+    
+    @IsOptional()
+    @IsString()
+    @MaxLength(128, { message: 'guarantorGPS ต้องมีความยาวไม่เกิน' })
+    guarantorGPS: string;	//guarantorGPS
 
 }
 
@@ -97,4 +108,10 @@ export class UpdateAdvanceGuarantorDto {
     @IsOptional()
     @IsString()
     guarantorImage: string;	//รูปภาพ
+
+    
+    @IsOptional()
+    @IsString()
+    @MaxLength(128, { message: 'guarantorGPS ต้องมีความยาวไม่เกิน' })
+    guarantorGPS: string;	//guarantorGPS
 }

@@ -176,5 +176,21 @@ export class SaleItemRepository {
         }
     }
 
+    async sumRemainingBalance(){
+        const query1 = this.repository.createQueryBuilder('saleitem')
+        .select('SUM(COALESCE(saleitem.remainingBalance, 0))', 'remainingBalance')
+        .where('saleitem.statusInstallment IS NULL')
+        .andWhere('saleitem.interestType = :interestType',{interestType:'ลดต้น/ลดดอก'})
+         const queryResult1 = await query1.getRawOne();
+
+         const query2 = this.repository.createQueryBuilder('saleitem')
+         .select(['saleitem.totalOrder','saleitem.interestRate','saleitem.numInstallments','saleitem.paymentAmount','saleitem.totalInterest'])
+         .where('saleitem.statusInstallment IS NULL')
+         .andWhere('saleitem.interestType = :interestType',{interestType:'คงที่'})
+          const queryResult2 = await query2.getMany();
+
+        return {queryResult1,queryResult2}  
+    }
+
 
 }
