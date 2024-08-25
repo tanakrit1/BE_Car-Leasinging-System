@@ -188,9 +188,30 @@ export class SaleItemRepository {
          .where('saleitem.statusInstallment IS NULL')
          .andWhere('saleitem.interestType = :interestType',{interestType:'คงที่'})
           const queryResult2 = await query2.getMany();
-
+          
         return {queryResult1,queryResult2}  
     }
+
+    async soldCount(startYear, startMonth){
+        const queryCountcar:any = await this.repository.createQueryBuilder('saleitem')
+        .select('COUNT(DISTINCT carInformation.id)', 'soldCount') 
+        .leftJoin('saleitem.carInformation', 'carInformation')
+        .where('carInformation.carStatus = :status', { status: 'sold' }) 
+        .andWhere('carInformation.carType = :carType', { carType: 'buy' })
+        .andWhere('YEAR(saleItem.contractDate) = :startYear AND MONTH(saleItem.contractDate) = :startMonth', { startYear, startMonth })
+        .getRawOne();
+        const soldCount = queryCountcar?.soldCount || 0; 
+
+        const queryCountcarTran:any = await this.repository.createQueryBuilder('saleitem')
+        .leftJoinAndSelect('saleitem.carInformation', 'carInformation')
+        .where('carInformation.carStatus = :status', { status: 'sold' }) 
+        .andWhere('carInformation.carType = :carType', { carType: 'buy' })
+        .andWhere('YEAR(saleItem.contractDate) = :startYear AND MONTH(saleItem.contractDate) = :startMonth', { startYear, startMonth })
+        .getMany();
+        return {soldCount,soldCountTran:queryCountcarTran}
+    }
+
+    
 
 
 }

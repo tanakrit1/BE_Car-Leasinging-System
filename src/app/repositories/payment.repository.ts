@@ -172,15 +172,7 @@ export class PaymentRepository {
             .orderBy('payment.createdAt', 'DESC');
             const queryResultTran = await queryTransection.getMany();
        //------------------------------------------------------------------------------------------------------------------//
-            const queryCountcar:any = await this.repository.createQueryBuilder('payment')
-            .select('COUNT(DISTINCT carInformation.id)', 'soldCount') 
-            .leftJoin('payment.saleItem', 'saleItem')
-            .leftJoin('saleItem.carInformation', 'carInformation')
-            .where('carInformation.carStatus = :status', { status: 'sold' }) 
-            .andWhere('carInformation.carType = :carType', { carType: 'buy' })
-            .andWhere('YEAR(saleItem.contractDate) = :startYear AND MONTH(saleItem.contractDate) = :startMonth', { startYear, startMonth })
-            .getRawOne();
-            const soldCount = queryCountcar?.soldCount || 0; 
+            const soldCount = await this.saleItemRepository.soldCount(startYear,startMonth)
         //------------------------------------------------------------------------------------------------------------------//
             const carInformation = await this.CarInformationRepository.reportPayment(startYear,startMonth)
         //------------------------------------------------------------------------------------------------------------------//
@@ -206,11 +198,12 @@ export class PaymentRepository {
             return {
                 Result:{
                     ...queryResult,
-                    soldCount:soldCount||0,
+                    soldCount:soldCount?.soldCount||0,
                     totalCost:carInformation?.totalCost||0,
                     totalInstallmentBal: totalInstallmentBal+Number(saleItem.queryResult1.remainingBalance),
                 },
-                Transection:queryResultTran
+                Transection:queryResultTran,
+                TransectionSold:soldCount.soldCountTran
             };
 
         } catch (err) {
