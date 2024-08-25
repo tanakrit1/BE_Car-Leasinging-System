@@ -148,6 +148,7 @@ export class PaymentRepository {
             const startDate = new Date(dto.date);
             const startYear = startDate.getFullYear();
             const startMonth = startDate.getMonth() + 1; 
+        //------------------------------------------------------------------------------------------------------------------//
             const query = this.repository.createQueryBuilder('payment')
                 .select('SUM(COALESCE(payment.amountPay, 0))', 'totalAmountPay')
                 .addSelect('SUM(COALESCE(payment.InterestPay, 0))', 'totalInterestPay')
@@ -160,7 +161,7 @@ export class PaymentRepository {
                 .orderBy('payment.createdAt', 'DESC');
     
             const queryResult = await query.getRawOne();
-
+        //------------------------------------------------------------------------------------------------------------------//
             const queryTransection = this.repository.createQueryBuilder('payment')
             .leftJoinAndSelect('payment.saleItem', 'saleItem')
             .leftJoinAndSelect('saleItem.carInformation', 'carInformation')
@@ -170,9 +171,19 @@ export class PaymentRepository {
             )
             .orderBy('payment.createdAt', 'DESC');
             const queryResultTran = await queryTransection.getMany();
-
+       //------------------------------------------------------------------------------------------------------------------//
+            const queryCountcar:any = await this.repository.createQueryBuilder('payment')
+            .select('COUNT(DISTINCT carInformation.id)', 'soldCount') 
+            .leftJoin('payment.saleItem', 'saleItem')
+            .leftJoin('saleItem.carInformation', 'carInformation')
+            .where('carInformation.carStatus = :status', { status: 'sold' }) 
+            .andWhere('carInformation.carType = :carType', { carType: 'buy' })
+            .andWhere('YEAR(saleItem.contractDate) = :startYear AND MONTH(saleItem.contractDate) = :startMonth', { startYear, startMonth })
+            .getRawOne();
+            const soldCount = queryCountcar?.soldCount || 0; 
+        //------------------------------------------------------------------------------------------------------------------//
             const carInformation = await this.CarInformationRepository.reportPayment(startYear,startMonth)
-
+        //------------------------------------------------------------------------------------------------------------------//
             const saleItem = await this.saleItemRepository.sumRemainingBalance()
 
             let totalInstallmentBal = 0
@@ -191,9 +202,11 @@ export class PaymentRepository {
                 totalInstallmentBal += installmentBalance;
                
             });
+        //------------------------------------------------------------------------------------------------------------------//
             return {
                 Result:{
                     ...queryResult,
+                    soldCount:soldCount||0,
                     totalCost:carInformation?.totalCost||0,
                     totalInstallmentBal: totalInstallmentBal+Number(saleItem.queryResult1.remainingBalance),
                 },
