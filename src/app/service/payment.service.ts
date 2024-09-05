@@ -49,7 +49,7 @@ export class PaymentService {
         }
         const model: PaymentModel = plainToInstance(PaymentModel, {
             ...dto,
-            datePay: dayjs().add(1, 'month').format('YYYY-MM-DD'),
+            // datePay: dayjs().add(1, 'month').format('YYYY-MM-DD'),
             saleItem: saleItemModel
         })
         const createdPayment = await this.paymentRepository.save(model);
@@ -125,7 +125,8 @@ export class PaymentService {
             //เพิ่มคำนวนเเเละupdate saleItem
             saleItemUpdate = {
                 id: saleItemModel.id,
-                dueDate: dayjs().format('YYYY-MM-DD'), //วันนัดชำระ
+                // dueDate: dayjs().format('YYYY-MM-DD'), //วันนัดชำระ
+                dueDate: null, //วันนัดชำระ
                 paymentAmount: Number(saleItemModel.paymentAmount || 0) + Number(dto.amountPay || 0), //จำนวนเงินที่ชำระแล้ว ,
                 remainingBalance: Number(saleItemModel.remainingBalance || 0) - Number(dto.amountPay || 0), //ยอดเงินคงเหลือ
                 totalInterest: Number(saleItemModel.totalInterest || 0) + Number(dto.InterestPay || 0), //ดอกเบี้ยที่ได้รับรวม
@@ -137,7 +138,7 @@ export class PaymentService {
         }
         const model: PaymentModel = plainToInstance(PaymentModel, {
             ...dto,
-            datePay: dayjs().format('YYYY-MM-DD'),
+            // datePay: dayjs().format('YYYY-MM-DD'),
             saleItem: saleItemModel
         })
         const createdPayment = await this.paymentRepository.save(model);
