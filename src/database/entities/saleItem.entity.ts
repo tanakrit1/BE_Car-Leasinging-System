@@ -140,6 +140,10 @@ export class SaleItem extends BaseEntity {
       })
     contractDate: Date; //วันที่ทำสัญญา
 
+    
+    @Column({ name: 'saleItemNote', type: 'nvarchar', length: 256, nullable: true })
+    saleItemNote: string;	//หมายเหตุลูกค้า
+
     @OneToMany(() => Guarantor, (guarantor) => guarantor.saleItem)
     guarantors: Guarantor[];
 

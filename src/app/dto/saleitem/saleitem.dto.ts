@@ -105,6 +105,11 @@ export class CreateSaleItemDto {
     @Transform(({ value }: TransformFnParams) => new Date(value))
     @IsDate({message:'วันที่ทำสัญญา ต้องเป็นรูปแบบวันที่'})
     contractDate?: Date; //วันที่ทำสัญญา 
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุลูกค้า ต้องมีความยาวไม่เกิน' })
+    saleItemNote?: string; //หมายเหตุลูกค้า
 }
 
 export class UpdateSaleItemDto {
@@ -200,6 +205,11 @@ export class UpdateSaleItemDto {
     @Transform(({ value }: TransformFnParams) => new Date(value))
     @IsDate({message:'วันที่ทำสัญญา ต้องเป็นรูปแบบวันที่'})
     contractDate?: Date; //วันที่ทำสัญญา 
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุลูกค้า ต้องมีความยาวไม่เกิน' })
+    saleItemNote?: string; //หมายเหตุลูกค้า
 }
 
 export class CreateAdvanceSaleItemDto {
@@ -297,6 +307,11 @@ export class CreateAdvanceSaleItemDto {
     @Transform(({ value }: TransformFnParams) => new Date(value))
     @IsDate({message:'วันที่ทำสัญญา ต้องเป็นรูปแบบวันที่'})
     contractDate?: Date; //วันที่ทำสัญญา 
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุลูกค้า ต้องมีความยาวไม่เกิน' })
+    saleItemNote?: string; //หมายเหตุลูกค้า
 
      //-----------------------------carInformation--------------------------------//
 
@@ -494,6 +509,11 @@ export class UpdateAdvanceSaleItemDto {
     @Transform(({ value }: TransformFnParams) => new Date(value))
     @IsDate({message:'วันที่ทำสัญญา ต้องเป็นวันที่'})
     contractDate?: Date; //วันที่ทำสัญญา 
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุลูกค้า ต้องมีความยาวไม่เกิน' })
+    saleItemNote?: string; //หมายเหตุลูกค้า
 
     //-----------------------------carInformation--------------------------------//
     @IsOptional()

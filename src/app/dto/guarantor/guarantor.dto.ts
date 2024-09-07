@@ -40,6 +40,11 @@ export class CreateGuarantorDto {
     @IsString()
     @MaxLength(128, { message: 'guarantorGPS ต้องมีความยาวไม่เกิน' })
     guarantorGPS: string;	//guarantorGPS
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุผู้ค้ำ ต้องมีความยาวไม่เกิน' })
+    guarantorNote: string;	//หมายเหตุผู้ค้ำ
 }
 
 export class UpdateGuarantorDto {
@@ -75,6 +80,11 @@ export class UpdateGuarantorDto {
     @IsString()
     @MaxLength(128, { message: 'guarantorGPS ต้องมีความยาวไม่เกิน' })
     guarantorGPS: string;	//guarantorGPS
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุผู้ค้ำ ต้องมีความยาวไม่เกิน' })
+    guarantorNote: string;	//หมายเหตุผู้ค้ำ
 
 }
 
@@ -114,4 +124,9 @@ export class UpdateAdvanceGuarantorDto {
     @IsString()
     @MaxLength(128, { message: 'guarantorGPS ต้องมีความยาวไม่เกิน' })
     guarantorGPS: string;	//guarantorGPS
+
+    @IsOptional()
+    @IsString()
+    @MaxLength(256, { message: 'หมายเหตุผู้ค้ำ ต้องมีความยาวไม่เกิน' })
+    guarantorNote: string;	//หมายเหตุผู้ค้ำ
 }
