@@ -501,7 +501,7 @@ export class UpdateAdvanceSaleItemDto {
     @IsNumber( undefined,{ message: 'รวมค่าปรับ ต้องเป็นชนิดตัวเลข' })
     totalFee?: number;//รวมค่าปรับ
 
-    @IsNotEmpty({ message: 'carInformation_id ต้องไม่เป็นค่าว่าง' })
+    @IsOptional()
     @IsNumber( undefined,{ message: 'carInformation_id ต้องเป็นชนิดตัวเลข' })
     carInformation_id?: number;
 
