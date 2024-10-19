@@ -179,22 +179,25 @@ export class PaymentRepository {
             const saleItem = await this.saleItemRepository.sumRemainingBalance()
 
             let totalInstallmentBal = 0
+            // console.log(saleItem.queryResult2)
             saleItem.queryResult2.forEach(saleitem => {
                 const numInstallments = saleitem.numInstallments&& parseFloat(saleitem.numInstallments)||0;
                 const interestRate = saleitem.interestRate||0;
-                const totalOrder = saleitem.totalOrder||0;
+                const totalOrder = Number(saleitem.totalOrder)||0;
                 const paymentAmount = Number(saleitem.paymentAmount)||0;
                 const totalInterest = Number(saleitem.totalInterest)||0;
-    
+              
                 // totalInstallmentBal +=((Math.ceil((totalOrder / numInstallments)) + Math.ceil((totalOrder * interestRate / 100))) * numInstallments) - Math.ceil((0 + 0));
+                if (numInstallments > 0 && totalOrder > 0) {
                 const interestAmount = Math.ceil(totalOrder * interestRate / 100);
                 const installmentAmount = Math.ceil(totalOrder / numInstallments + interestAmount);
                 const totalInstallments = Math.ceil(installmentAmount * numInstallments);
                 const installmentBalance = Math.ceil(totalInstallments - (paymentAmount + totalInterest));
                 totalInstallmentBal += installmentBalance;
-               
+                }
             });
         //------------------------------------------------------------------------------------------------------------------//
+        console.log("totalInstallmentBal",totalInstallmentBal,'queryResult1',saleItem.queryResult1.remainingBalance)
             return {
                 Result:{
                     ...queryResult,
