@@ -188,11 +188,11 @@ export class PaymentRepository {
                 const totalInterest = Number(saleitem.totalInterest)||0;
               
                 // totalInstallmentBal +=((Math.ceil((totalOrder / numInstallments)) + Math.ceil((totalOrder * interestRate / 100))) * numInstallments) - Math.ceil((0 + 0));
-                if (numInstallments > 0 && totalOrder > 0) {
-                const interestAmount = Math.ceil(totalOrder * interestRate / 100);
-                const installmentAmount = Math.ceil(totalOrder / numInstallments + interestAmount);
-                const totalInstallments = Math.ceil(installmentAmount * numInstallments);
-                const installmentBalance = Math.ceil(totalInstallments - (paymentAmount + totalInterest));
+                if (numInstallments > 0 && totalOrder > 0) { // จำนวนงวดผ่อนชำระ เเละ  ยอดจัด มากกว่า  0
+                const interestAmount = Math.ceil(totalOrder * interestRate / 100); //  (ยอดจัด * อัตราดอกเบี้ย) / 100
+                const installmentAmount = Math.ceil(totalOrder / numInstallments + interestAmount); // (ยอดจัด / จำนวนงวดผ่อนชำระ) + ดอกเบี้ย
+                const totalInstallments = Math.ceil(installmentAmount * numInstallments); // จำนวนเงินผ่อนชำระ * จำนวนงวดผ่อนชำระ
+                const installmentBalance = Math.ceil(totalInstallments - (paymentAmount + totalInterest)); // ยอดรวมผ่อนชำระ - (จำนวนเงินที่ชำระแล้ว +ดอกเบี้ยที่ได้รับรวม )
                 totalInstallmentBal += installmentBalance;
                 }
             });

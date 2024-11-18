@@ -91,7 +91,8 @@ export class UpdateGuarantorDto {
 
 export class UpdateAdvanceGuarantorDto {
 
-    @IsNotEmpty({ message: 'id ต้องไม่เป็นค่าว่าง' })
+    // @IsNotEmpty({ message: 'id ต้องไม่เป็นค่าว่าง' })
+    @IsOptional()
     @IsNumber( undefined,{ message: 'id ต้องเป็นชนิดตัวเลข' })
     id:number;
     
